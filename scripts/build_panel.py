@@ -1,0 +1,639 @@
+#!/usr/bin/env python3
+"""Erzeugt data/snp_panel.json – den kuratierten Nutrigenomik-Panel.
+
+Quelle der Wahrheit für den täglichen Tracker. rsID-basiert: der Tracker braucht
+keine Koordinaten, nur rsID + Genotyp aus dem Profil. Koordinaten (GRCh38/GRCh37)
+dienen nur der Extraktion im Colab-Notebook als Fallback und werden dort gegen
+Ensembl + gegen das REF-Allel der VCF validiert.
+
+Alle Effekt-Allele sind auf dem Plus-Strang von GRCh38 angegeben (wie in einer
+üblichen VCF). Level-Vokabular fuer Rezept-Tags: none < low < medium < high.
+"""
+import json
+import os
+
+# ---------------------------------------------------------------------------
+# Rezept-Tag-Vokabular. Diaetregeln referenzieren diese Tags; das Rezept-
+# Tagging (data/recipes.json) verwendet exakt dieselben Schluessel + Level.
+# ---------------------------------------------------------------------------
+TAG_VOCAB = {
+    "levels": ["none", "low", "medium", "high"],
+    "tags": {
+        "saturated_fat":       "Gesaettigte Fettsaeuren (Kokosmilch hoch, sonst niedrig)",
+        "sodium":              "Natrium/Salz (Tamari, Salz, Ketchup)",
+        "glycemic_load":       "Glykaemische Last (staerke-/zuckerreich vs. Cauliflower/Chickpea-Rice)",
+        "fiber":               "Ballaststoffe",
+        "folate":              "Folat (Linsen, Kichererbsen, Spinat, Bohnen)",
+        "iron_nonheme":        "Nicht-Haem-Eisen (Huelsenfruechte, Spinat)",
+        "vitamin_c":           "Vitamin C (Paprika, Zitrone, Tomate, Beeren) – steigert Eisenaufnahme",
+        "beta_carotene":       "Provitamin-A-Carotinoide (Karotte, Suesskartoffel, Kuerbis, Spinat)",
+        "omega3_ala":          "Pflanzliches ALA-Omega-3 (Lein, Chia, Walnuss, Hanf)",
+        "cruciferous":         "Kreuzbluetler (Brokkoli, Kohl, Blumenkohl)",
+        "antioxidants":        "Polyphenole/Antioxidantien (Beeren, Granatapfel, Kakao, Kraeuter, Oliven)",
+        "added_sugar":         "Zugesetzter Zucker (Ahornsirup, Honig, Trockenfruechte, Ketchup)",
+        "purines":             "Purine (Pilze, Huelsenfruechte)",
+        "oxalate":             "Oxalat (Spinat, Suesskartoffel, Mandel)",
+        "legume_protein":      "Huelsenfrucht-Protein (Linsen, Kichererbsen, Bohnen)",
+        "caffeine_theobromine":"Koffein/Theobromin (Kakao)",
+        "potassium":           "Kalium (Huelsenfruechte, Suesskartoffel, Gruenzeug, Tomate) – Gegenspieler zu Natrium",
+        "choline":             "Cholin (auf veganer Kost strukturell knapp; etwas in Huelsenfruechten, Kreuzbluetlern, Samen)",
+        "riboflavin_b2":       "Riboflavin/B2 (Naehrhefe, Mandeln, Pilze, Gruenzeug) – Kofaktor der MTHFR",
+        "omega6_linoleic":     "Omega-6-Linolsaeure (Samenoele, viele Nuesse) – hohes n-6:n-3 hemmt die FADS1-Umwandlung",
+    },
+    "booleans": {
+        "gluten_free":     "Von Natur aus glutenfrei (bei GF-Tamari/Gewuerzen)",
+        "dairy_free":      "Milchfrei",
+        "contains_alcohol":"Enthaelt relevanten Alkohol (nur vernachlaessigbar in Essig)",
+        "b12_fortified":   "Enthaelt potenziell mit B12 angereicherte Zutat (angereicherte Naehrhefe/Pflanzendrink)",
+    },
+}
+
+# ---------------------------------------------------------------------------
+# SNP-Panel. Jeder Eintrag:
+#   rsid, gene, trait, category, grch38{chrom,pos}, grch37{chrom,pos},
+#   ref, alt, effect_allele, effect_summary,
+#   dosage: {"0": .., "1": .., "2": ..}  (Interpretation nach Anzahl Effekt-Allele)
+#   diet_rules: [{when, tag, prefer, weight, rationale}]
+#   supplement_rules: [{when, supplement, priority, rationale, diet_context}]
+#   experience_rules: [{when, tip}]  (Geschmack/Adhaerenz, kein Health-Score)
+#   confidence: "hoch"|"mittel" (fuer die Effekt-Allel-Richtung), source
+# when-Bedingungen: ">=1", ">=2", "==0", "==1", "==2"
+# ---------------------------------------------------------------------------
+PANEL = [
+    {
+        "rsid": "rs4988235", "gene": "MCM6/LCT",
+        "trait": "Laktosetoleranz (Laktasepersistenz)", "category": "unvertraeglichkeit",
+        "grch38": {"chrom": "2", "pos": 135851076}, "grch37": {"chrom": "2", "pos": 136608646},
+        "ref": "G", "alt": "A", "effect_allele": "G",
+        "effect_summary": "G = ancestrale, adulte Laktase-Nicht-Persistenz (Laktoseintoleranz-Neigung); A = Laktasepersistenz.",
+        "dosage": {
+            "0": "AA – Laktasepersistent, Milchzucker wird i.d.R. gut vertragen.",
+            "1": "GA – meist ausreichende Laktaseaktivitaet.",
+            "2": "GG – adulte Laktase-Nicht-Persistenz, Laktose wird als Erwachsener oft schlecht verdaut.",
+        },
+        "diet_rules": [
+            {"when": ">=2", "tag": "dairy_free", "prefer": True, "weight": 1,
+             "rationale": "Alle Rezepte sind rein pflanzlich/milchfrei – ideal bei Laktoseintoleranz."},
+        ],
+        "supplement_rules": [
+            {"when": ">=2", "supplement": "Calcium + Vitamin D (milchfreie Quelle)", "priority": "mittel",
+             "rationale": "Ohne Milchprodukte auf Calcium-/D-Zufuhr achten (angereicherte Pflanzendrinks, Tahini, Gruenzeug).",
+             "diet_context": ["vegan"]},
+        ],
+        "confidence": "hoch", "source": "Enattah 2002; gut etabliert",
+    },
+    {
+        "rsid": "rs182549", "gene": "MCM6/LCT", "spotlight": False,
+        "trait": "Laktosetoleranz (bestaetigend)", "category": "unvertraeglichkeit",
+        "grch38": {"chrom": "2", "pos": 135859856}, "grch37": {"chrom": "2", "pos": 136616754},
+        "ref": "C", "alt": "T", "effect_allele": "C",
+        "effect_summary": "In starkem LD mit rs4988235; C = Nicht-Persistenz, T = Persistenz.",
+        "dosage": {
+            "0": "TT – Laktasepersistent.",
+            "1": "CT – meist tolerant.",
+            "2": "CC – Neigung zu Laktoseintoleranz (bestaetigt rs4988235).",
+        },
+        "diet_rules": [], "supplement_rules": [],
+        "confidence": "hoch", "source": "LD-Proxy zu rs4988235",
+    },
+    {
+        "rsid": "rs762551", "gene": "CYP1A2",
+        "trait": "Koffein-Metabolismus", "category": "metabolismus",
+        "grch38": {"chrom": "15", "pos": 74749576}, "grch37": {"chrom": "15", "pos": 75041917},
+        "ref": "A", "alt": "C", "effect_allele": "C",
+        "effect_summary": "A-Allel = schneller Koffein-Metabolismus; C-Allel = langsamer Metabolismus und hoehere Koffein-Sensitivitaet.",
+        "dosage": {
+            "0": "AA – schneller Koffein-Abbau.",
+            "1": "AC – intermediaerer/langsamer Abbau.",
+            "2": "CC – langsamer Abbau; hoehere Koffeinempfindlichkeit.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "caffeine_theobromine", "prefer": "low", "weight": 1,
+             "rationale": "Langsame Metabolisierer reagieren empfindlicher auf Koffein/Theobromin (Kakao)."},
+        ],
+        "supplement_rules": [],
+        "experience_rules": [
+            {"when": ">=1", "tip": "Blueprint-Kakao im Smoothie eher morgens statt spaet – bei CC baut der Koerper Koffein langsamer ab."},
+        ],
+        "confidence": "hoch", "source": "Cornelis 2006",
+    },
+    {
+        "rsid": "rs1801133", "gene": "MTHFR (C677T)",
+        "trait": "Folatstoffwechsel / Homocystein", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "1", "pos": 11796321}, "grch37": {"chrom": "1", "pos": 11856378},
+        "ref": "G", "alt": "A", "effect_allele": "A",
+        "effect_summary": "A (677T) senkt die MTHFR-Aktivitaet; AA ~30% Restaktivitaet, hoeheres Homocystein.",
+        "dosage": {
+            "0": "GG – normale Enzymaktivitaet.",
+            "1": "GA – ~65% Aktivitaet, meist unproblematisch bei guter Folatzufuhr.",
+            "2": "AA – ~30% Aktivitaet; erhoehter Bedarf an Folat/Riboflavin, ggf. Methylfolat.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "folate", "prefer": "high", "weight": 3,
+             "rationale": "Reduzierte MTHFR-Aktivitaet profitiert von folatreichen Gerichten (Linsen, Kichererbsen, Spinat)."},
+            {"when": ">=1", "tag": "riboflavin_b2", "prefer": "high", "weight": 1,
+             "rationale": "Riboflavin (B2) ist Kofaktor der MTHFR und stabilisiert das Enzym – B2-reiche Zutaten (Naehrhefe, Mandeln, Pilze) helfen."},
+        ],
+        "supplement_rules": [
+            {"when": ">=2", "supplement": "5-MTHF (Methylfolat) + Riboflavin (B2) + B12", "priority": "hoch",
+             "rationale": "Bei AA ist die Umwandlung in aktives Folat stark reduziert; Methylfolat umgeht den Engpass, B2 ist Kofaktor.",
+             "diet_context": []},
+            {"when": "==1", "supplement": "Ausreichend Folat (Nahrung/Methylfolat)", "priority": "mittel",
+             "rationale": "Bei GA auf gute Folatzufuhr achten; oft ueber Ernaehrung deckbar.",
+             "diet_context": []},
+        ],
+        "confidence": "hoch", "source": "Frosst 1995; gut etabliert",
+    },
+    {
+        "rsid": "rs1801131", "gene": "MTHFR (A1298C)", "spotlight": False,
+        "trait": "Folatstoffwechsel (bestaetigend)", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "1", "pos": 11794419}, "grch37": {"chrom": "1", "pos": 11854476},
+        "ref": "T", "alt": "G", "effect_allele": "G",
+        "effect_summary": "G (1298C) senkt die MTHFR-Aktivitaet milder; relevant v.a. als Compound-Heterozygotie mit C677T.",
+        "dosage": {
+            "0": "TT – normal.",
+            "1": "TG – milde Reduktion.",
+            "2": "GG – moderate Reduktion; zusammen mit C677T-A verstaerkt.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "folate", "prefer": "high", "weight": 1,
+             "rationale": "Zusaetzliche milde MTHFR-Reduktion – folatreiche Gerichte bevorzugen."},
+        ],
+        "supplement_rules": [],
+        "confidence": "hoch", "source": "Weisberg 1998",
+    },
+    # APOE wird als Sonderfall aus rs429358 + rs7412 als Diplotyp berechnet (siehe analysis.py).
+    {
+        "rsid": "rs429358", "gene": "APOE", "trait": "APOE-Genotyp (Teil 1)", "category": "lipide",
+        "grch38": {"chrom": "19", "pos": 44908684}, "grch37": {"chrom": "19", "pos": 45411941},
+        "ref": "T", "alt": "C", "effect_allele": "C",
+        "effect_summary": "C an rs429358 definiert (mit rs7412=C) das e4-Allel. e4 = Empfindlichkeit ggue. gesaettigtem Fett, hoeheres LDL/kardiovaskulaeres Risiko.",
+        "dosage": {"0": "TT", "1": "TC", "2": "CC"},
+        "diet_rules": [], "supplement_rules": [],
+        "apoe_component": True,
+        "confidence": "hoch", "source": "APOE-Isoformen, etabliert",
+    },
+    {
+        "rsid": "rs7412", "gene": "APOE", "trait": "APOE-Genotyp (Teil 2)", "category": "lipide",
+        "grch38": {"chrom": "19", "pos": 44908822}, "grch37": {"chrom": "19", "pos": 45412079},
+        "ref": "C", "alt": "T", "effect_allele": "T",
+        "effect_summary": "T an rs7412 definiert (mit rs429358=T) das e2-Allel.",
+        "dosage": {"0": "CC", "1": "CT", "2": "TT"},
+        "diet_rules": [], "supplement_rules": [],
+        "apoe_component": True,
+        "confidence": "hoch", "source": "APOE-Isoformen, etabliert",
+    },
+    {
+        "rsid": "rs174537", "gene": "FADS1",
+        "trait": "Omega-3-Umwandlung (ALA -> EPA/DHA)", "category": "fettsaeuren",
+        "grch38": {"chrom": "11", "pos": 61785208}, "grch37": {"chrom": "11", "pos": 61552680},
+        "ref": "G", "alt": "T", "effect_allele": "T",
+        "effect_summary": "G = effiziente Desaturase (gute ALA->EPA/DHA-Umwandlung); T = reduzierte Umwandlung.",
+        "dosage": {
+            "0": "GG – effiziente Umwandlung pflanzlicher Omega-3 in EPA/DHA.",
+            "1": "GT – intermediaere Umwandlung.",
+            "2": "TT – schwache Umwandlung; pflanzliches ALA (Lein/Chia/Walnuss/Hanf) wird kaum in EPA/DHA umgewandelt.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "omega3_ala", "prefer": "high", "weight": 2,
+             "rationale": "Bei schwacher Umwandlung sind reichlich ALA-Quellen sinnvoll – decken den EPA/DHA-Bedarf aber nur begrenzt."},
+            {"when": ">=1", "tag": "omega6_linoleic", "prefer": "low", "weight": 1,
+             "rationale": "Ein niedriges n-6:n-3-Verhaeltnis verbessert die ohnehin schwache ALA->EPA/DHA-Umwandlung (weniger Konkurrenz um FADS1)."},
+        ],
+        "supplement_rules": [
+            {"when": ">=1", "supplement": "Algenoel (DHA/EPA)", "priority": "hoch",
+             "rationale": "Auf rein pflanzlicher Kost mit schwacher FADS1-Umwandlung ist praeformiertes EPA/DHA aus Algenoel die zuverlaessigste Quelle.",
+             "diet_context": ["vegan"]},
+        ],
+        "confidence": "hoch", "source": "Ameur 2012; Schaeffer 2006",
+    },
+    {
+        "rsid": "rs174546", "gene": "FADS1", "spotlight": False,
+        "trait": "Omega-3-Umwandlung (bestaetigend)", "category": "fettsaeuren",
+        "grch38": {"chrom": "11", "pos": 61799627}, "grch37": {"chrom": "11", "pos": 61567099},
+        "ref": "C", "alt": "T", "effect_allele": "T",
+        "effect_summary": "In starkem LD mit rs174537; T = reduzierte FADS1-Umwandlung.",
+        "dosage": {"0": "CC – effizient", "1": "CT – intermediaer", "2": "TT – reduziert"},
+        "diet_rules": [], "supplement_rules": [],
+        "confidence": "hoch", "source": "LD-Proxy zu rs174537",
+    },
+    {
+        "rsid": "rs1800562", "gene": "HFE (C282Y)",
+        "trait": "Eisenspeicherung (Haemochromatose)", "category": "mineralstoffe",
+        "grch38": {"chrom": "6", "pos": 26092913}, "grch37": {"chrom": "6", "pos": 26093141},
+        "ref": "G", "alt": "A", "effect_allele": "A",
+        "effect_summary": "A (C282Y) = Hauptrisikoallel fuer erhoehte Eisenspeicherung; AA = deutlich erhoehtes Haemochromatose-Risiko.",
+        "dosage": {
+            "0": "GG – kein C282Y-Risiko.",
+            "1": "GA – Traeger; meist nur leicht erhoehte Eisenwerte.",
+            "2": "AA – Risiko fuer Eisenueberladung; Eisenaufnahme bewusst steuern.",
+        },
+        "diet_rules": [
+            {"when": ">=2", "tag": "iron_nonheme", "prefer": "low", "weight": 2,
+             "rationale": "Bei Eisenueberladungsrisiko sehr eisenreiche Mahlzeiten nicht zusaetzlich pushen."},
+            {"when": ">=2", "tag": "vitamin_c", "prefer": "low", "weight": 1,
+             "rationale": "Vitamin C steigert die Nicht-Haem-Eisenaufnahme – bei AA nicht gezielt mit eisenreichen Gerichten kombinieren."},
+        ],
+        "supplement_rules": [
+            {"when": ">=1", "supplement": "KEINE Eisenpraeparate ohne aerztlichen Befund; Ferritin kontrollieren", "priority": "hoch",
+             "rationale": "Bei HFE-Risikoallel ist unkontrollierte Eisensupplementierung potenziell schaedlich.",
+             "diet_context": []},
+        ],
+        "confidence": "hoch", "source": "Feder 1996; gut etabliert",
+    },
+    {
+        "rsid": "rs1799945", "gene": "HFE (H63D)", "spotlight": False,
+        "trait": "Eisenspeicherung (milder)", "category": "mineralstoffe",
+        "grch38": {"chrom": "6", "pos": 26091179}, "grch37": {"chrom": "6", "pos": 26091407},
+        "ref": "C", "alt": "G", "effect_allele": "G",
+        "effect_summary": "G (H63D) = milderes Eisenspeicher-Allel; relevant v.a. als Compound-Heterozygotie mit C282Y.",
+        "dosage": {"0": "CC – kein H63D", "1": "CG – Traeger", "2": "GG – leicht erhoehte Eisenneigung"},
+        "diet_rules": [
+            {"when": ">=2", "tag": "iron_nonheme", "prefer": "low", "weight": 1,
+             "rationale": "Milde Eisenspeicher-Neigung – sehr eisenreiche Mahlzeiten nicht zusaetzlich verstaerken."},
+        ],
+        "supplement_rules": [],
+        "confidence": "hoch", "source": "Feder 1996",
+    },
+    {
+        "rsid": "rs601338", "gene": "FUT2",
+        "trait": "Sekretor-Status / B12 & Mikrobiom", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "19", "pos": 48703417}, "grch37": {"chrom": "19", "pos": 49206674},
+        "ref": "G", "alt": "A", "effect_allele": "A",
+        "effect_summary": "A (W143X) = Nicht-Sekretor-Allel; AA = Nicht-Sekretor. Beeinflusst B12-Status und Darmmikrobiom (Richtung uneinheitlich).",
+        "dosage": {
+            "0": "GG – Sekretor.",
+            "1": "GA – Sekretor.",
+            "2": "AA – Nicht-Sekretor; veraendertes Mikrobiom/B12-Dynamik.",
+        },
+        "diet_rules": [],
+        "supplement_rules": [
+            {"when": ">=0", "supplement": "Vitamin B12", "priority": "hoch",
+             "rationale": "Auf rein pflanzlicher Kost ist B12-Supplementierung unabhaengig vom Genotyp essenziell; FUT2 beeinflusst zusaetzlich die B12-Dynamik.",
+             "diet_context": ["vegan"]},
+        ],
+        "confidence": "mittel", "source": "Hazra 2008 (Richtung uneinheitlich)",
+    },
+    {
+        "rsid": "rs7903146", "gene": "TCF7L2",
+        "trait": "Blutzucker / Typ-2-Diabetes-Risiko", "category": "glukose",
+        "grch38": {"chrom": "10", "pos": 112998590}, "grch37": {"chrom": "10", "pos": 114758349},
+        "ref": "C", "alt": "T", "effect_allele": "T",
+        "effect_summary": "T = staerkstes haeufiges Risikoallel fuer Typ-2-Diabetes; profitiert von niedriger glykaemischer Last.",
+        "dosage": {
+            "0": "CC – kein erhoehtes Risiko ueber dieses Allel.",
+            "1": "CT – moderat erhoehtes T2D-Risiko.",
+            "2": "TT – deutlich erhoehtes Risiko; niedrige glykaemische Last besonders sinnvoll.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "glycemic_load", "prefer": "low", "weight": 3,
+             "rationale": "Bei T2D-Risikoallel niedrig-glykaemische Gerichte bevorzugen (Cauliflower-/Chickpea-Rice statt staerkereich)."},
+            {"when": ">=1", "tag": "fiber", "prefer": "high", "weight": 2,
+             "rationale": "Ballaststoffe daempfen die Blutzuckerantwort."},
+            {"when": ">=1", "tag": "added_sugar", "prefer": "low", "weight": 2,
+             "rationale": "Zugesetzten Zucker (Ahornsirup, Honig) reduzieren."},
+        ],
+        "supplement_rules": [],
+        "confidence": "hoch", "source": "Grant 2006; gut etabliert",
+    },
+    {
+        "rsid": "rs9939609", "gene": "FTO",
+        "trait": "Appetit / Adipositas-Neigung", "category": "gewicht",
+        "grch38": {"chrom": "16", "pos": 53786615}, "grch37": {"chrom": "16", "pos": 53820527},
+        "ref": "T", "alt": "A", "effect_allele": "A",
+        "effect_summary": "A = Risikoallel fuer hoeheren Appetit/BMI; profitiert von proteinreicher, ballaststoffreicher, saettigender Kost.",
+        "dosage": {
+            "0": "TT – keine erhoehte FTO-Neigung.",
+            "1": "TA – leicht erhoehte Neigung.",
+            "2": "AA – staerkere Appetit-/Gewichtsneigung; Saettigung priorisieren.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "legume_protein", "prefer": "high", "weight": 2,
+             "rationale": "Protein aus Huelsenfruechten erhoeht die Saettigung."},
+            {"when": ">=1", "tag": "fiber", "prefer": "high", "weight": 2,
+             "rationale": "Ballaststoffe verbessern die Saettigung und Gewichtskontrolle."},
+        ],
+        "supplement_rules": [],
+        "confidence": "hoch", "source": "Frayling 2007",
+    },
+    {
+        "rsid": "rs1421085", "gene": "FTO (kausal)", "spotlight": False,
+        "trait": "Adipositas-Neigung (bestaetigend)", "category": "gewicht",
+        "grch38": {"chrom": "16", "pos": 53767042}, "grch37": {"chrom": "16", "pos": 53800954},
+        "ref": "T", "alt": "C", "effect_allele": "C",
+        "effect_summary": "C = kausales Risikoallel (stoert ARID5B/Adipozyten-Braeunung); in LD mit rs9939609-A.",
+        "dosage": {"0": "TT – nicht-Risiko", "1": "TC – Traeger des FTO-Risikoallels",
+                   "2": "CC – staerkere Adipozyten-Speicherneigung"},
+        "diet_rules": [], "supplement_rules": [],
+        "confidence": "hoch", "source": "Claussnitzer 2015",
+    },
+    {
+        "rsid": "rs17782313", "gene": "MC4R",
+        "trait": "Appetit/Saettigung (bestaetigend)", "category": "gewicht",
+        "grch38": {"chrom": "18", "pos": 60183864}, "grch37": {"chrom": "18", "pos": 57851097},
+        "ref": "T", "alt": "C", "effect_allele": "C",
+        "effect_summary": "C = Allel fuer hoeheren BMI/Appetit; verstaerkt das FTO-Bild.",
+        "dosage": {"0": "TT", "1": "TC", "2": "CC – hoehere Appetitneigung"},
+        "diet_rules": [
+            {"when": ">=1", "tag": "fiber", "prefer": "high", "weight": 1,
+             "rationale": "Saettigung ueber Ballaststoffe unterstuetzen."},
+        ],
+        "supplement_rules": [],
+        "confidence": "mittel", "source": "Loos 2008",
+    },
+    {
+        "rsid": "rs2282679", "gene": "GC (Vitamin-D-Bindungsprotein)",
+        "trait": "Vitamin-D-Status", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "4", "pos": 71742666}, "grch37": {"chrom": "4", "pos": 72608383},
+        "ref": "T", "alt": "G", "effect_allele": "G",
+        "effect_summary": "G = niedrigere 25(OH)D-Spiegel; bei sonnenarmer/pflanzlicher Kost relevant.",
+        "dosage": {
+            "0": "TT – guenstiger fuer Vitamin-D-Spiegel.",
+            "1": "TG – tendenziell etwas niedriger.",
+            "2": "GG – Neigung zu niedrigem Vitamin D.",
+        },
+        "diet_rules": [],
+        "supplement_rules": [
+            {"when": ">=1", "supplement": "Vitamin D3 (Flechten) + K2", "priority": "hoch",
+             "rationale": "Pflanzliche Kost liefert kaum Vitamin D; bei GC-Risikoallel ist die Neigung zu niedrigen Spiegeln groesser.",
+             "diet_context": ["vegan"]},
+        ],
+        "confidence": "hoch", "source": "Wang 2010 (GWAS Vitamin D)",
+    },
+    {
+        "rsid": "rs7501331", "gene": "BCO1",
+        "trait": "Beta-Carotin -> Vitamin-A-Umwandlung", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "16", "pos": 81264597}, "grch37": {"chrom": "16", "pos": 81298202},
+        "ref": "C", "alt": "T", "effect_allele": "T",
+        "effect_summary": "T = reduzierte Umwandlung von Beta-Carotin in aktives Vitamin A (Retinol).",
+        "dosage": {
+            "0": "CC – effiziente Umwandlung.",
+            "1": "CT – reduzierte Umwandlung.",
+            "2": "TT – deutlich reduzierte Umwandlung; Carotinoide werden schlechter in Retinol umgesetzt.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "beta_carotene", "prefer": "high", "weight": 2,
+             "rationale": "Bei schwacher Umwandlung hilft ein hoher Carotinoid-Input (Karotte, Suesskartoffel, Kuerbis) – mit etwas Fett zur besseren Aufnahme."},
+        ],
+        "supplement_rules": [
+            {"when": ">=2", "supplement": "Vitamin-A-Status beobachten; ggf. praeformiertes Vitamin A (retinol) erwaegen", "priority": "mittel",
+             "rationale": "Rein pflanzliche Kost liefert nur Provitamin A; bei TT ist die Umwandlung schwach.",
+             "diet_context": ["vegan"]},
+        ],
+        "confidence": "hoch", "source": "Leung 2009",
+    },
+    {
+        "rsid": "rs12934922", "gene": "BCO1", "spotlight": False,
+        "trait": "Beta-Carotin-Umwandlung (bestaetigend)", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "16", "pos": 81263700}, "grch37": {"chrom": "16", "pos": 81297305},
+        "ref": "A", "alt": "T", "effect_allele": "T",
+        "effect_summary": "T = reduzierte BCO1-Umwandlung (bestaetigt rs7501331).",
+        "dosage": {"0": "AA – effizient", "1": "AT – reduziert", "2": "TT – deutlich reduziert"},
+        "diet_rules": [], "supplement_rules": [],
+        "confidence": "hoch", "source": "Leung 2009",
+    },
+    {
+        "rsid": "rs4880", "gene": "SOD2",
+        "trait": "Mitochondrialer oxidativer Stress", "category": "antioxidation",
+        "grch38": {"chrom": "6", "pos": 159692840}, "grch37": {"chrom": "6", "pos": 160113872},
+        "ref": "C", "alt": "T", "effect_allele": "T",
+        "effect_summary": "T (Val16) veraendert den mitochondrialen Import der Superoxid-Dismutase; profitiert von antioxidantienreicher Kost.",
+        "dosage": {
+            "0": "CC – Ala/Ala.",
+            "1": "CT – Ala/Val.",
+            "2": "TT – Val/Val; profitiert von reichlich Nahrungs-Antioxidantien.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "antioxidants", "prefer": "high", "weight": 1,
+             "rationale": "Polyphenolreiche Gerichte (Beeren, Granatapfel, Kakao, Kraeuter) unterstuetzen die antioxidative Abwehr."},
+        ],
+        "supplement_rules": [],
+        "confidence": "mittel", "source": "Sutton 2003",
+    },
+    {
+        "rsid": "rs713598", "gene": "TAS2R38",
+        "trait": "Bitter-Geschmack (Kreuzbluetler)", "category": "geschmack",
+        "grch38": {"chrom": "7", "pos": 141972804}, "grch37": {"chrom": "7", "pos": 141672604},
+        "ref": "G", "alt": "C", "effect_allele": "C",
+        "effect_summary": "C (Pro49) = Bitter-Schmecker (PAV); nimmt Bitterstoffe in Kreuzbluetlern staerker wahr.",
+        "dosage": {
+            "0": "GG – Nicht-Schmecker (AVI); Bitteres kaum wahrnehmbar.",
+            "1": "GC – intermediaer.",
+            "2": "CC – ausgepraegter Bitter-Schmecker; Brokkoli/Kohl/Blumenkohl schmecken bitterer.",
+        },
+        "diet_rules": [],
+        "supplement_rules": [],
+        "experience_rules": [
+            {"when": ">=1", "tip": "Als Bitter-Schmecker Kreuzbluetler roesten/blanchieren und mit Zitrone, geroesteten Nuessen oder etwas Suesse (Karotte) abrunden – reduziert die wahrgenommene Bitterkeit."},
+        ],
+        "confidence": "hoch", "source": "Kim 2003",
+    },
+    {
+        "rsid": "rs2187668", "gene": "HLA-DQA1 (DQ2.5-Tag)",
+        "trait": "Zoeliakie-Suszeptibilitaet (genetisch)", "category": "unvertraeglichkeit",
+        "grch38": {"chrom": "6", "pos": 32605884}, "grch37": {"chrom": "6", "pos": 32713862},
+        "ref": "C", "alt": "T", "effect_allele": "T",
+        "effect_summary": "T markiert das HLA-DQ2.5-Haplotyp – genetische Voraussetzung fuer Zoeliakie (Suszeptibilitaet, keine Diagnose).",
+        "dosage": {
+            "0": "CC – DQ2.5 unwahrscheinlich ueber diesen Tag.",
+            "1": "CT – DQ2.5-Traeger; Zoeliakie moeglich (aber selten).",
+            "2": "TT – DQ2.5 wahrscheinlich; hoehere genetische Suszeptibilitaet.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "gluten_free", "prefer": True, "weight": 1,
+             "rationale": "Die Rezepte sind ueberwiegend natuerlich glutenfrei – bei DQ2.5-Traegern zertifiziert glutenfreies Tamari/Za'atar/Wuerzmischungen waehlen."},
+        ],
+        "supplement_rules": [],
+        "experience_rules": [
+            {"when": ">=1", "tip": "Bei DQ2.5-Suszeptibilitaet: Tamari, Za'atar und 'umami seasoning' in zertifiziert glutenfreier Variante kaufen (Sojasauce kann Weizen enthalten). Ein positiver Gentest ist KEINE Zoeliakie-Diagnose – nur ein Arzt/Serologie klaert das."},
+        ],
+        "confidence": "hoch", "source": "Monsuur 2008 (DQ2.5-Tag)",
+    },
+    {
+        "rsid": "rs671", "gene": "ALDH2",
+        "trait": "Alkohol-Abbau (Flush)", "category": "metabolismus",
+        "grch38": {"chrom": "12", "pos": 111803962}, "grch37": {"chrom": "12", "pos": 112241766},
+        "ref": "G", "alt": "A", "effect_allele": "A",
+        "effect_summary": "A (*2) = defizitaere Aldehyddehydrogenase (Alkohol-Flush, Acetaldehyd-Akkumulation).",
+        "dosage": {
+            "0": "GG – normaler Alkoholabbau.",
+            "1": "GA – reduziert; Flush-Reaktion.",
+            "2": "AA – stark reduziert; Alkohol sollte gemieden werden.",
+        },
+        "diet_rules": [],
+        "supplement_rules": [],
+        "experience_rules": [
+            {"when": ">=1", "tip": "Die Rezepte enthalten keinen relevanten Alkohol (nur Spuren in Balsamico/Rotweinessig, die verkochen/vernachlaessigbar sind) – aus ALDH2-Sicht unbedenklich."},
+        ],
+        "confidence": "hoch", "source": "gut etabliert (v.a. ostasiatische Populationen)",
+    },
+    # -------- Erweiterung (vegan-relevant), Richtungen adversariell geprueft --------
+    {
+        "rsid": "rs699", "gene": "AGT (M235T)",
+        "trait": "Salzsensitivitaet des Blutdrucks", "category": "blutdruck",
+        "grch38": {"chrom": "1", "pos": 230710048}, "grch37": {"chrom": "1", "pos": 230845794},
+        "ref": "A", "alt": "G", "effect_allele": "G",
+        "effect_summary": "G (235T/Thr) = hoehere Angiotensinogen-Spiegel; assoziiert mit salzsensitivem Blutdruck.",
+        "dosage": {
+            "0": "AA – geringere Salzsensitivitaet ueber diesen Marker.",
+            "1": "AG – intermediaer.",
+            "2": "GG – Neigung zu salzsensitivem Blutdruck; Natrium moderat halten, Kalium betonen.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "sodium", "prefer": "low", "weight": 2,
+             "rationale": "Bei salzsensitiver Variante Natrium (Tamari, Salz, Ketchup) moderat halten."},
+            {"when": ">=1", "tag": "potassium", "prefer": "high", "weight": 1,
+             "rationale": "Ein guenstiges Natrium-Kalium-Verhaeltnis (Huelsenfruechte, Gruenzeug, Suesskartoffel) unterstuetzt den Blutdruck."},
+        ],
+        "supplement_rules": [],
+        "confidence": "mittel", "source": "Sethi 2003 (Richtung nutrigenetisch vertretbar)",
+    },
+    {
+        "rsid": "rs1801198", "gene": "TCN2 (P259R)",
+        "trait": "Vitamin-B12-Transport (Holo-Transcobalamin)", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "22", "pos": 50626299}, "grch37": {"chrom": "22", "pos": 51064727},
+        "ref": "C", "alt": "G", "effect_allele": "G",
+        "effect_summary": "G (776G) senkt Holo-Transcobalamin (zellulaer verfuegbares B12); bei veganer Kost besonders relevant.",
+        "dosage": {
+            "0": "CC – guenstiger B12-Transport.",
+            "1": "CG – intermediaer.",
+            "2": "GG – niedrigeres Holo-TC; verlaesslicher B12-Status besonders wichtig.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "b12_fortified", "prefer": True, "weight": 1,
+             "rationale": "Mit B12 angereicherte Zutaten (angereicherte Naehrhefe/Pflanzendrinks) helfen, den Transport-Engpass auszugleichen."},
+        ],
+        "supplement_rules": [
+            {"when": ">=1", "supplement": "Vitamin B12", "priority": "hoch",
+             "rationale": "Bei reduziertem B12-Transport (TCN2) zuverlaessige, ausreichend hohe B12-Zufuhr sicherstellen.",
+             "diet_context": ["vegan"]},
+        ],
+        "confidence": "mittel", "source": "Namour 2001",
+    },
+    {
+        "rsid": "rs1805087", "gene": "MTR (A2756G)",
+        "trait": "B12-abhaengige Homocystein-Remethylierung", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "1", "pos": 236885200}, "grch37": {"chrom": "1", "pos": 237048451},
+        "ref": "A", "alt": "G", "effect_allele": "G",
+        "effect_summary": "MTR (Methioninsynthase) ist B12-abhaengig; das G-Allel kann die Homocystein-Remethylierung beeinflussen. Ergaenzt den MTHFR/Folat-Zyklus.",
+        "dosage": {
+            "0": "AA – Referenz.",
+            "1": "AG – Traeger.",
+            "2": "GG – potenziell veraenderte Remethylierung; auf B12 + Folat achten.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "folate", "prefer": "high", "weight": 1,
+             "rationale": "Der Methylierungszyklus profitiert von guter Folatzufuhr (Huelsenfruechte, Gruenzeug)."},
+        ],
+        "supplement_rules": [
+            {"when": ">=1", "supplement": "Vitamin B12", "priority": "hoch",
+             "rationale": "MTR benoetigt B12 als Kofaktor – auf veganer Kost ohnehin essenziell.",
+             "diet_context": ["vegan"]},
+        ],
+        "confidence": "niedrig", "source": "Harmon 1999 (Richtung in der Literatur uneinheitlich)",
+    },
+    {
+        "rsid": "rs2236225", "gene": "MTHFD1 (R653Q)",
+        "trait": "Folat-/Cholin-Bedarf (Ein-Kohlenstoff-Stoffwechsel)", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "14", "pos": 64442127}, "grch37": {"chrom": "14", "pos": 64908497},
+        "ref": "G", "alt": "A", "effect_allele": "A",
+        "effect_summary": "A (653Q) erhoeht bei knapper Zufuhr den Bedarf an Folat UND Cholin – auf veganer Kost (wenig Cholin) relevant.",
+        "dosage": {
+            "0": "GG – Referenz.",
+            "1": "GA – leicht erhoehter Bedarf.",
+            "2": "AA – hoeherer Folat-/Cholinbedarf bei knapper Zufuhr.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "folate", "prefer": "high", "weight": 1,
+             "rationale": "Erhoehter Folatbedarf – folatreiche Gerichte bevorzugen."},
+            {"when": ">=1", "tag": "choline", "prefer": "high", "weight": 1,
+             "rationale": "Bei knappem Cholin faellt mehr Last auf den Folatweg – cholinreichere Zutaten (Huelsenfruechte, Kreuzbluetler, Samen) helfen."},
+        ],
+        "supplement_rules": [],
+        "confidence": "mittel", "source": "Brody 2002",
+    },
+    {
+        "rsid": "rs7946", "gene": "PEMT (V175M)",
+        "trait": "Endogene Cholin-Synthese", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "17", "pos": 17513176}, "grch37": {"chrom": "17", "pos": 17437386},
+        "ref": "C", "alt": "T", "effect_allele": "T",
+        "effect_summary": "T reduziert die endogene Phosphatidylcholin-Synthese; da Cholin auf veganer Kost knapp ist, steigt der Nahrungsbedarf.",
+        "dosage": {
+            "0": "CC – Referenz.",
+            "1": "CT – etwas reduzierte Eigensynthese.",
+            "2": "TT – reduzierte Cholin-Eigensynthese; auf cholinreiche Zutaten achten.",
+        },
+        "diet_rules": [
+            {"when": ">=1", "tag": "choline", "prefer": "high", "weight": 2,
+             "rationale": "Bei reduzierter Eigensynthese ist Nahrungscholin wichtiger (Huelsenfruechte, Kreuzbluetler, Sojaprodukte, Samen)."},
+        ],
+        "supplement_rules": [
+            {"when": ">=2", "supplement": "Cholin (z.B. Sonnenblumen-Lecithin) erwaegen", "priority": "mittel",
+             "rationale": "Auf veganer Kost mit reduzierter PEMT-Synthese kann Cholin knapp werden.",
+             "diet_context": ["vegan"]},
+        ],
+        "confidence": "mittel", "source": "da Costa 2006",
+    },
+    {
+        "rsid": "rs10741657", "gene": "CYP2R1",
+        "trait": "Vitamin-D-25-Hydroxylierung", "category": "vitaminstoffwechsel",
+        "grch38": {"chrom": "11", "pos": 14893332}, "grch37": {"chrom": "11", "pos": 14914878},
+        "ref": "A", "alt": "G", "effect_allele": "A",
+        "effect_summary": "CYP2R1 aktiviert Vitamin D in der Leber (25-Hydroxylierung); das A-Allel ist mit niedrigeren 25(OH)D-Spiegeln assoziiert (zweiter robuster D-Locus neben GC).",
+        "dosage": {
+            "0": "GG – guenstiger fuer Vitamin-D-Spiegel.",
+            "1": "AG – intermediaer.",
+            "2": "AA – Neigung zu niedrigerem Vitamin D.",
+        },
+        "diet_rules": [],
+        "supplement_rules": [
+            {"when": ">=1", "supplement": "Vitamin D3 (Flechten) + K2", "priority": "hoch",
+             "rationale": "Zweiter Vitamin-D-Locus (Aktivierung); auf sonnenarmer/veganer Kost Vitamin D supplementieren.",
+             "diet_context": ["vegan"]},
+        ],
+        "confidence": "mittel", "source": "Wang 2010 (GWAS Vitamin D)",
+    },
+]
+
+
+# ---------------------------------------------------------------------------
+# Vegane Basis-Empfehlungen – UNABHAENGIG vom Genotyp. Ergeben sich allein aus
+# der rein pflanzlichen Kost der Blueprint-Rezepte. SNP-Regeln koennen die
+# Prioritaet dieser Punkte zusaetzlich anheben (Merge in analysis.py).
+# ---------------------------------------------------------------------------
+DIET_BASELINE = {
+    "diet_pattern": "rein pflanzlich (vegan), vollwertig, ballaststoffreich",
+    "supplements": [
+        {"supplement": "Vitamin B12", "priority": "hoch",
+         "rationale": "Auf rein pflanzlicher Kost nicht verlaesslich zu decken – Supplementierung ist essenziell."},
+        {"supplement": "Vitamin D3 (Flechten) + K2", "priority": "hoch",
+         "rationale": "Kaum in pflanzlicher Nahrung enthalten; besonders bei wenig Sonnenlicht."},
+        {"supplement": "Algenoel (DHA/EPA)", "priority": "hoch",
+         "rationale": "Direkte marine Omega-3-Fettsaeuren fehlen in pflanzlicher Kost; ALA-Umwandlung ist begrenzt."},
+        {"supplement": "Jod (dosiert, z.B. Algen/jodiertes Salz)", "priority": "mittel",
+         "rationale": "Ohne Fisch/Milchprodukte haeufig knapp; Ueberdosierung (Kelp) jedoch vermeiden."},
+        {"supplement": "Selen (z.B. 1-2 Paranuesse) & Zink im Blick behalten", "priority": "niedrig",
+         "rationale": "Pflanzenkost kann grenzwertig sein; ueber Nahrung meist deckbar."},
+    ],
+}
+
+def main():
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    out = {
+        "schema_version": 2,
+        "assembly_note": (
+            "Koordinaten sind Fallback; das Colab-Notebook loest rsIDs autoritativ "
+            "ueber Ensembl auf und validiert gegen das REF-Allel der VCF."
+        ),
+        "tag_vocab": TAG_VOCAB,
+        "diet_baseline": DIET_BASELINE,
+        "snps": PANEL,
+    }
+    path = os.path.join(root, "data", "snp_panel.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=2)
+    print(f"geschrieben: {path}  ({len(PANEL)} SNPs)")
+
+
+if __name__ == "__main__":
+    main()

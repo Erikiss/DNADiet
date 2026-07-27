@@ -1,0 +1,31 @@
+# --- Rohe DNA-Daten NIEMALS versehentlich committen ---
+*.vcf
+*.vcf.gz
+*.hc.gz
+*.g.vcf.gz
+*.gvcf.gz
+*.cram
+*.crai
+*.bam
+*.bai
+*.tbi
+*.csi
+*.fa
+*.fasta
+*.fai
+
+# --- Persoenliches Genotyp-Profil (bewusst ignoriert, siehe genome/README.md) ---
+# Zum Aktivieren des committed-Modus explizit:  git add -f genome/profile.json
+genome/profile.json
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+
+# --- Diverses ---
+.ipynb_checkpoints/
+.DS_Store
