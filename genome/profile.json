@@ -1,0 +1,383 @@
+{
+  "schema_version": 1,
+  "sample_id": "M1CQRX41L",
+  "assembly": "GRCh38",
+  "engine": "pysam",
+  "panel_rsids": [
+    "rs4988235",
+    "rs182549",
+    "rs762551",
+    "rs1801133",
+    "rs1801131",
+    "rs429358",
+    "rs7412",
+    "rs174537",
+    "rs174546",
+    "rs1800562",
+    "rs1799945",
+    "rs601338",
+    "rs7903146",
+    "rs9939609",
+    "rs1421085",
+    "rs17782313",
+    "rs2282679",
+    "rs7501331",
+    "rs12934922",
+    "rs4880",
+    "rs713598",
+    "rs2187668",
+    "rs671",
+    "rs699",
+    "rs1801198",
+    "rs1805087",
+    "rs2236225",
+    "rs7946",
+    "rs10741657"
+  ],
+  "warnings": [],
+  "genotypes": {
+    "rs4988235": {
+      "alleles": [
+        "G",
+        "A"
+      ],
+      "genotype": "GA",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 99,
+      "dp": 18,
+      "pos": 135851076,
+      "contig": "chr2"
+    },
+    "rs182549": {
+      "alleles": [
+        "C",
+        "T"
+      ],
+      "genotype": "CT",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 99,
+      "dp": 27,
+      "pos": 135859184,
+      "contig": "chr2"
+    },
+    "rs762551": {
+      "alleles": [
+        "C",
+        "C"
+      ],
+      "genotype": "CC",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 74749576,
+      "contig": "chr15"
+    },
+    "rs1801133": {
+      "alleles": [
+        "G",
+        "A"
+      ],
+      "genotype": "GA",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 99,
+      "dp": 32,
+      "pos": 11796321,
+      "contig": "chr1"
+    },
+    "rs1801131": {
+      "alleles": [
+        "T",
+        "T"
+      ],
+      "genotype": "TT",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 11794419,
+      "contig": "chr1"
+    },
+    "rs429358": {
+      "alleles": [
+        "C",
+        "C"
+      ],
+      "genotype": "CC",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 50,
+      "dp": 17,
+      "pos": 44908684,
+      "contig": "chr19"
+    },
+    "rs7412": {
+      "alleles": [
+        "C",
+        "C"
+      ],
+      "genotype": "CC",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 44908822,
+      "contig": "chr19"
+    },
+    "rs174537": {
+      "alleles": [
+        "G",
+        "G"
+      ],
+      "genotype": "GG",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 61785208,
+      "contig": "chr11"
+    },
+    "rs174546": {
+      "alleles": [
+        "C",
+        "C"
+      ],
+      "genotype": "CC",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 61802358,
+      "contig": "chr11"
+    },
+    "rs1800562": {
+      "alleles": [
+        "G",
+        "G"
+      ],
+      "genotype": "GG",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 26092913,
+      "contig": "chr6"
+    },
+    "rs1799945": {
+      "alleles": [
+        "C",
+        "C"
+      ],
+      "genotype": "CC",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 26090951,
+      "contig": "chr6"
+    },
+    "rs601338": {
+      "alleles": [
+        "G",
+        "G"
+      ],
+      "genotype": "GG",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 48703417,
+      "contig": "chr19"
+    },
+    "rs7903146": {
+      "alleles": [
+        "C",
+        "T"
+      ],
+      "genotype": "CT",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 99,
+      "dp": 29,
+      "pos": 112998590,
+      "contig": "chr10"
+    },
+    "rs9939609": {
+      "alleles": [
+        "T",
+        "T"
+      ],
+      "genotype": "TT",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 53786615,
+      "contig": "chr16"
+    },
+    "rs1421085": {
+      "alleles": [
+        "T",
+        "T"
+      ],
+      "genotype": "TT",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 53767042,
+      "contig": "chr16"
+    },
+    "rs17782313": {
+      "alleles": [
+        "T",
+        "C"
+      ],
+      "genotype": "TC",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 99,
+      "dp": 29,
+      "pos": 60183864,
+      "contig": "chr18"
+    },
+    "rs2282679": {
+      "alleles": [
+        "T",
+        "T"
+      ],
+      "genotype": "TT",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 71742666,
+      "contig": "chr4"
+    },
+    "rs7501331": {
+      "alleles": [
+        "C",
+        "C"
+      ],
+      "genotype": "CC",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 81280891,
+      "contig": "chr16"
+    },
+    "rs12934922": {
+      "alleles": [
+        "T",
+        "T"
+      ],
+      "genotype": "TT",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 85,
+      "dp": 29,
+      "pos": 81268089,
+      "contig": "chr16"
+    },
+    "rs4880": {
+      "alleles": [
+        "G",
+        "G"
+      ],
+      "genotype": "GG",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 68,
+      "dp": 23,
+      "pos": 159692840,
+      "contig": "chr6"
+    },
+    "rs713598": {
+      "alleles": [
+        "G",
+        "G"
+      ],
+      "genotype": "GG",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 99,
+      "dp": 35,
+      "pos": 141973545,
+      "contig": "chr7"
+    },
+    "rs2187668": {
+      "alleles": [
+        "C",
+        "C"
+      ],
+      "genotype": "CC",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 32638107,
+      "contig": "chr6"
+    },
+    "rs671": {
+      "alleles": [
+        "G",
+        "G"
+      ],
+      "genotype": "GG",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 111803962,
+      "contig": "chr12"
+    },
+    "rs699": {
+      "alleles": [
+        "A",
+        "A"
+      ],
+      "genotype": "AA",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 230710048,
+      "contig": "chr1"
+    },
+    "rs1801198": {
+      "alleles": [
+        "G",
+        "C"
+      ],
+      "genotype": "GC",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 99,
+      "dp": 36,
+      "pos": 30615623,
+      "contig": "chr22"
+    },
+    "rs1805087": {
+      "alleles": [
+        "A",
+        "A"
+      ],
+      "genotype": "AA",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 236885200,
+      "contig": "chr1"
+    },
+    "rs2236225": {
+      "alleles": [
+        "G",
+        "G"
+      ],
+      "genotype": "GG",
+      "source": "assumed-ref",
+      "confidence": "niedrig",
+      "pos": 64442127,
+      "contig": "chr14"
+    },
+    "rs7946": {
+      "alleles": [
+        "T",
+        "T"
+      ],
+      "genotype": "TT",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 48,
+      "dp": 16,
+      "pos": 17506246,
+      "contig": "chr17"
+    },
+    "rs10741657": {
+      "alleles": [
+        "A",
+        "G"
+      ],
+      "genotype": "AG",
+      "source": "vcf",
+      "confidence": "hoch",
+      "gq": 99,
+      "dp": 26,
+      "pos": 14893332,
+      "contig": "chr11"
+    }
+  }
+}
