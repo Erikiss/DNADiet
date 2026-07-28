@@ -1,0 +1,29 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Abhaengigkeiten
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pysam
+      - name: Panel- & Rezeptdaten aktuell?
+        run: |
+          python scripts/build_panel.py
+          git diff --exit-code data/snp_panel.json \
+            || (echo "::error::data/snp_panel.json ist nicht aktuell – 'python scripts/build_panel.py' ausfuehren" && exit 1)
+      - name: Tests
+        run: pytest -q
+      - name: Tracker-Rauchtest (Demo-Profil)
+        run: python -m dnadiet.tracker --date 2026-01-01 --quiet

@@ -1,0 +1,255 @@
+[
+  {
+    "id": 1,
+    "title": "Vegetable Stir Fry with Cauliflower Rice",
+    "ingredients_raw": [
+      "1/2 medium onion, thinly sliced (~75 g)",
+      "1/4 wedge red cabbage, shredded (~150 g)",
+      "1/4 wedge white cabbage, shredded (~150 g)",
+      "200 g mung bean sprouts",
+      "200 g chopped broccoli",
+      "225 g shiitake mushrooms, sliced",
+      "150 g sugar snap peas",
+      "15 g ginger powder",
+      "15 g garlic powder",
+      "30 ml gluten-free low-sodium tamari",
+      "600 g cauliflower rice",
+      "15 ml olive oil",
+      "Optional: 7 g hemp seeds for garnish"
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Lemon Red Lentil Soup",
+    "ingredients_raw": [
+      "15-30 ml olive oil",
+      "3 large carrots, peeled and sliced (~360 g)",
+      "2 stalks celery, chopped (~180 g)",
+      "1 medium yellow onion, diced (~150 g)",
+      "4 cloves garlic, minced",
+      "1.5 liters vegetable stock",
+      "225 g red lentils",
+      "2 bay leaves",
+      "2.5 g turmeric",
+      "5 g cumin",
+      "Juice of 1 lemon",
+      "Zest of 1 lemon (optional)"
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Chickpea Vegetable Frittata",
+    "ingredients_raw": [
+      "240 g chickpea flour",
+      "360 ml water",
+      "1/2 medium onion, finely chopped",
+      "2 red peppers, diced",
+      "1 medium zucchini, diced",
+      "1 bunch parsley, chopped",
+      "1 bunch chives, chopped",
+      "2 garlic cloves, minced",
+      "15 g garlic powder",
+      "15 g ground cumin",
+      "1 Roma tomato, diced",
+      "225 g sliced mushrooms",
+      "15 ml olive oil"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Chickpea Stew",
+    "ingredients_raw": [
+      "5 cloves garlic, chopped",
+      "1 tbsp (6-8 g) cumin",
+      "2 tbsp (30 ml) extra virgin olive oil",
+      "2 tbsp (30 g) tomato paste",
+      "1 tbsp (6-8 g) paprika",
+      "1 tsp (3 g) red pepper flakes",
+      "3 cups (500 g) cooked chickpeas",
+      "2-3 tsp (5-7 g) za'atar",
+      "2-3 bay leaves",
+      "1 roasted bell pepper"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Cauliflower Lentil Loaf",
+    "ingredients_raw": [
+      "200 g cooked lentils",
+      "300 g riced cauliflower",
+      "150 g chopped onion",
+      "8 oz mushrooms",
+      "30 g nutritional yeast",
+      "5 g minced garlic",
+      "5 g Dijon mustard",
+      "2.5 g smoked paprika",
+      "2.5 g cumin",
+      "1.5 g black pepper",
+      "1.5 g chipotle powder",
+      "80 ml unsweetened ketchup (glaze)",
+      "5 ml liquid smoke (glaze)"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Mushroom and Walnut Bolognese with Spaghetti Squash",
+    "ingredients_raw": [
+      "225 g chopped cremini mushrooms",
+      "40 g chopped onion",
+      "40 g chopped carrots",
+      "40 g chopped celery",
+      "2 cloves garlic, chopped",
+      "60 g chopped walnuts",
+      "15 g garlic powder",
+      "15 g Italian seasoning",
+      "15 g tomato paste",
+      "340 g tomato sauce",
+      "30 ml gluten-free tamari",
+      "30 ml balsamic vinegar",
+      "1 medium spaghetti squash",
+      "5 ml olive oil"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Herb Seasoned Cauliflower “Turkey” with Sweet Potato Mash and Blanched Green Beans",
+    "ingredients_raw": [
+      "1 large head of cauliflower",
+      "30 ml olive oil",
+      "10 g garlic powder",
+      "10 g onion powder",
+      "10 g smoked paprika",
+      "5 g dried thyme",
+      "5 g dried rosemary",
+      "15 g nutritional yeast",
+      "100 ml vegetable broth",
+      "800 g sweet potatoes (mash)",
+      "30-60 ml almond milk (mash)",
+      "5 g garlic powder (mash)",
+      "5 g ground cinnamon (mash)",
+      "400 g green beans, trimmed"
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Black Lentil and Olive Salad with Spiced Roasted Carrots and Sundried Tomato Hummus",
+    "ingredients_raw": [
+      "3 large carrots, sliced into thick coins",
+      "1 shallot, thinly sliced",
+      "2 tbsp extra virgin olive oil",
+      "1 tbsp maple syrup",
+      "1 tsp smoked paprika",
+      "1 tsp ground cumin",
+      "1/2 tsp salt",
+      "1 cup black lentils, rinsed",
+      "2 cups water or vegetable broth",
+      "1 tbsp red wine vinegar",
+      "1 tsp dijon mustard",
+      "1/4 cup black currants",
+      "1/2 cup castelvetrano olives, pitted and chopped",
+      "1/3 cup roasted almonds, chopped",
+      "1/4 cup flat-leaf parsley, chopped",
+      "2 tbsp fresh mint, chopped",
+      "1/2 cup sun-dried tomato hummus (to serve)"
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Sweet Potato and Cabbage Curry with Cauliflower Rice",
+    "ingredients_raw": [
+      "2 cups shredded fresh cabbage",
+      "1 medium/small sweet potato, diced",
+      "1 medium onion, finely chopped",
+      "2 tbsp olive oil",
+      "1 tsp cumin seeds",
+      "1 dry red chili, broken",
+      "1/2 tsp turmeric powder",
+      "1 tsp coriander powder",
+      "1/2 tsp red chili powder",
+      "1/2 tsp salt",
+      "1/4 cup chopped cilantro",
+      "1 tbsp lime juice",
+      "2 cups cauliflower rice"
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Grain Free Porridge with Butterfly Pea Flower",
+    "ingredients_raw": [
+      "250 ml macadamia nut milk",
+      "30 g almond flour",
+      "15 g hemp seeds",
+      "10 g chia seeds",
+      "10 g ground flax",
+      "1/2 tsp vanilla extract",
+      "1 tsp butterfly pea flower powder",
+      "1/4 tsp cardamom",
+      "Handful of fresh berries for topping"
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Mushroom Walnut Stuffed Acorn Squash",
+    "ingredients_raw": [
+      "2 medium acorn squash, halved",
+      "1 tablespoon olive oil (squash)",
+      "1 tablespoon olive oil (filling)",
+      "16 oz crimini mushroom",
+      "4 tbsp chopped walnuts",
+      "4 tbsp unsweetened dried cranberries",
+      "1 tbsp honey",
+      "1/2 tbsp cinnamon"
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Butternut Squash Soup with Roasted Apples and Carrots",
+    "ingredients_raw": [
+      "1 medium onion, diced",
+      "3 cloves garlic, minced",
+      "1 medium butternut squash, cubed (~4 cups)",
+      "2 Honeycrisp apples, diced",
+      "2 large carrots, chopped",
+      "1 teaspoon garam masala",
+      "1/2 teaspoon ginger powder",
+      "4 cups vegetable broth",
+      "1 cup coconut milk",
+      "2 tablespoons olive oil"
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Black Bean and Mushroom Bowl with Chickpea Rice",
+    "ingredients_raw": [
+      "1 can (15 oz) black beans, drained and rinsed",
+      "1 cup cherry tomatoes, halved",
+      "1/2 medium onion, diced",
+      "1 cup oyster mushrooms, chopped",
+      "1 teaspoon umami seasoning",
+      "1/2 teaspoon cumin",
+      "1/2 teaspoon garlic powder",
+      "1 tablespoon olive oil",
+      "1/4 cup pickled red onions",
+      "1 cup fresh spinach",
+      "1/2 cup shredded carrots",
+      "1/2 cup sliced radish",
+      "1/4 cup chopped cilantro",
+      "1 1/2 cups cooked chickpea rice"
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Superfood Smoothie",
+    "ingredients_raw": [
+      "1/2 cup strawberries",
+      "1/2 cup blueberries",
+      "1/4 cup pomegranate arils",
+      "1/2 cup dark cherries, pitted",
+      "1 cup almond milk",
+      "1 tablespoon flax seeds",
+      "5-6 macadamia nuts",
+      "1 teaspoon chia seeds",
+      "1 teaspoon blueprint cacao"
+    ]
+  }
+]

@@ -1,0 +1,71 @@
+name: DNADiet Daily Tracker
+
+# Taeglicher Tracker: liest das Genotyp-Profil (oder ein Demo-Profil), erstellt
+# den Tagesreport (Gericht des Tages, Fokus-Gen, Ranking, Supplemente,
+# Rezept-Anpassungen), aktualisiert das README-Dashboard und die History und
+# committet die Ergebnisse zurueck ins Repo.
+
+on:
+  schedule:
+    - cron: '0 6 * * *'      # taeglich 06:00 UTC
+  workflow_dispatch: {}       # manuell ausloesbar
+  push:
+    branches: [ main ]
+    paths:
+      - 'data/**'
+      - 'dnadiet/**'
+      - 'genome/profile.json'
+      - '.github/workflows/daily-tracker.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dnadiet-tracker
+  cancel-in-progress: false
+
+jobs:
+  track:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Optionaler privater Modus: Profil aus einem Repo-Secret statt aus der
+      # versionierten Datei. Die Datei landet nur im temporaeren Runner-Verzeichnis
+      # und wird NICHT committet. Secret anlegen: Settings -> Secrets -> Actions
+      # -> DNA_PROFILE_JSON (Inhalt = kompletter profile.json-Text).
+      - name: Profil aus Secret schreiben (optional)
+        env:
+          DNA_PROFILE_JSON: ${{ secrets.DNA_PROFILE_JSON }}
+        run: |
+          if [ -n "$DNA_PROFILE_JSON" ]; then
+            printf '%s' "$DNA_PROFILE_JSON" > "$RUNNER_TEMP/profile.json"
+            echo "DNADIET_PROFILE=$RUNNER_TEMP/profile.json" >> "$GITHUB_ENV"
+            echo "Profil aus Secret geladen (privater Modus)."
+          else
+            echo "Kein Secret gesetzt – nutze genome/profile.json bzw. Demo-Profil."
+          fi
+
+      - name: Tracker ausfuehren
+        env:
+          # Repo-Variable DNADIET_REDACT=1 -> rohe Genotypen im committeten Report maskieren
+          DNADIET_REDACT: ${{ vars.DNADIET_REDACT }}
+        run: python -m dnadiet.tracker
+
+      - name: Ergebnisse committen
+        run: |
+          git config user.name "dnadiet-tracker[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports README.md
+          if git diff --cached --quiet; then
+            echo "Keine Aenderungen zu committen."
+          else
+            git commit -m "chore(tracker): Tagesreport $(date -u +%F)"
+            git push
+          fi

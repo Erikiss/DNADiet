@@ -1,0 +1,5 @@
+# Der taegliche Tracker (dnadiet.tracker) braucht KEINE Drittanbieter-Pakete –
+# reine Python-Standardbibliothek. Diese Datei deckt die Extraktion im
+# Colab-Notebook / lokale Entwicklung ab.
+pysam>=0.22        # VCF/gVCF/CRAM-Parsing mit Tabix-Zugriff
+requests>=2.28     # Ensembl-REST (rsID -> GRCh38-Koordinaten) im Notebook
