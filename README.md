@@ -5,6 +5,12 @@ Colab-Mappe, und ein **taeglicher GitHub-Tracker** wertet aus, welche der 14
 Blueprint-Gerichte (Bryan Johnson) am besten zu deiner Genetik passen, welche
 **Anpassungen** sich lohnen und welche **Supplemente** sinnvoll sind.
 
+[![In Colab oeffnen](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Erikiss/DNADiet/blob/main/notebooks/DNADiet_Colab.ipynb)
+
+👉 **Ein Klick genuegt:** Der Badge oeffnet die Mappe direkt aus GitHub im Browser. Zellen ausführen,
+die 3 Dateien hochladen – am Ende schreibt das Notebook `genome/profile.json` **direkt zurueck ins Repo**
+(kein lokales Git, nichts auf Drive). Der Tracker startet dann automatisch.
+
 <!-- DNADIET:START -->
 ### 🧬 DNADiet – Tages-Dashboard (2026-07-28 · ⚠️ DEMO)
 
@@ -30,12 +36,12 @@ notebooks/DNADiet_Colab.ipynb  <----------- - M1CQRX41L...cram.crai       (CRAM-
 genome/profile.json  -->  Daily Tracker (GitHub Action)  -->  reports/ + Dashboard
 ```
 
-1. **Colab-Mappe oeffnen:** [`notebooks/DNADiet_Colab.ipynb`](notebooks/DNADiet_Colab.ipynb)
-   → drei Dateien hochladen → es entsteht ein kleines `profile.json` (nur die
-   ernaehrungsrelevanten SNPs, **kein** ganzes Genom).
-2. **Profil hinterlegen:** `genome/profile.json` ins Repo committen (`git add genome/profile.json`).
-   *Alternativen für alle, die es privater mögen:* als Secret `DNA_PROFILE_JSON` speichern oder
-   Genotypen im Report per `DNADIET_REDACT=1` maskieren (siehe [genome/README](genome/README.md)).
+1. **Colab-Mappe oeffnen** (Badge oben) → drei Dateien hochladen → es entsteht ein kleines
+   `profile.json` (nur die ernaehrungsrelevanten SNPs, **kein** ganzes Genom).
+2. **Profil ins Repo schreiben:** Die letzte Notebook-Zelle committet `genome/profile.json`
+   **direkt ueber die GitHub-API** zurueck ins Repo – einmalig braucht sie dafuer einen
+   fine-grained Token (*Contents: write*). *Alternativen:* lokal herunterladen und selbst
+   committen, oder Secret `DNA_PROFILE_JSON` / Redaction `DNADIET_REDACT=1` (siehe [genome/README](genome/README.md)).
 3. **Taeglich zuruecklehnen:** Der Tracker laeuft per Cron (06:00 UTC) und schreibt jeden Tag:
    - 🥇 **Gericht des Tages** (rotiert unter deinen Top-Treffern)
    - 🔎 **Fokus-Gen des Tages** (rotierendes Mini-Erklaerstueck)

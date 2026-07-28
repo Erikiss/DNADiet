@@ -14,7 +14,12 @@ das der Tracker im Demo-Modus nutzt, solange kein echtes Profil vorhanden ist.
 
 ## Profil aktivieren
 
-### Standard · Datei committen
+### Am einfachsten · direkt aus dem Colab-Notebook
+Die letzte Zelle der [Colab-Mappe](../notebooks/DNADiet_Colab.ipynb) schreibt `genome/profile.json`
+per GitHub-API **direkt ins Repo** – kein lokales Git noetig. Einmalig braucht sie einen
+fine-grained Token mit *Contents: Read and write*.
+
+### Alternativ · Datei lokal committen
 Einfach ins Repo legen und committen:
 
 ```bash

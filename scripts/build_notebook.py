@@ -19,13 +19,25 @@ def _src(lines):
     return [p + "\n" for p in parts[:-1]] + [parts[-1]]
 
 
+# GitHub-Koordinaten des Repos – zentrale Quelle fuer Badge, Klon und API-Push.
+OWNER = "Erikiss"
+REPO = "DNADiet"
+BRANCH = "main"
+
 cells = []
 
 cells.append(md(
     "# 🧬🍽️ DNADiet – deine DNA trifft die Blueprint-Rezepte",
     "",
+    f"[![In Colab oeffnen](https://colab.research.google.com/assets/colab-badge.svg)]"
+    f"(https://colab.research.google.com/github/{OWNER}/{REPO}/blob/{BRANCH}/notebooks/DNADiet_Colab.ipynb)",
+    "",
     "Diese Colab-Mappe wertet **deine persoenlichen DNA-Daten** aus und gleicht sie mit dem",
     "**Blueprint-Rezeptdossier** (14 rein pflanzliche Gerichte von Bryan Johnson) ab.",
+    "",
+    "**Alles laeuft im Browser** – oeffne oben den *In Colab oeffnen*-Link (er zeigt direkt auf",
+    "dieses Notebook in GitHub), fuehre die Zellen aus, lade deine 3 Dateien hoch, und am Ende",
+    "schreibt das Notebook `profile.json` **direkt zurueck ins GitHub-Repo**. Nichts liegt lokal oder auf Drive.",
     "",
     "**Du laedst genau diese drei Dateien hoch:**",
     "",
@@ -53,8 +65,10 @@ cells.append(code(
 ))
 cells.append(code(
     "# DNADiet-Code + Daten (Panel & Rezepte) aus dem Repo holen",
-    "REPO_URL = 'https://github.com/erikiss/dnadiet.git'  # ggf. auf dein Repo anpassen",
-    "BRANCH   = 'main'                                     # bzw. dein Branch",
+    f"GITHUB_OWNER = '{OWNER}'   # ggf. auf deinen Fork anpassen",
+    f"GITHUB_REPO  = '{REPO}'",
+    f"BRANCH       = '{BRANCH}'",
+    "REPO_URL = f'https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}.git'",
     "",
     "import os, sys, subprocess",
     "if not os.path.isdir('/content/dnadiet_repo'):",
@@ -204,7 +218,7 @@ cells.append(code(
 ))
 
 cells.append(md(
-    "## 6) Profil speichern & herunterladen",
+    "## 6) Profil speichern",
     "",
     "Das `profile.json` enthaelt **nur** die ~29 Panel-Genotypen – kein vollstaendiges Genom.",
 ))
@@ -213,36 +227,77 @@ cells.append(code(
     "with open('profile.json', 'w', encoding='utf-8') as f:",
     "    _json.dump(profile, f, ensure_ascii=False, indent=2)",
     "print('Gespeichert: profile.json (' + str(len(profile['genotypes'])) + ' Genotypen)')",
-    "from google.colab import files as _f",
-    "_f.download('profile.json')",
 ))
 
 cells.append(md(
-    "## 7) Taeglichen Tracker aktivieren",
+    "## 7) Direkt ins GitHub-Repo schreiben ✍️",
     "",
-    "Damit der **taegliche GitHub-Tracker** deine echten Daten nutzt:",
+    "Diese Zelle committet `genome/profile.json` **direkt ueber die GitHub-API** ins Repo –",
+    "**kein lokales Git, kein Download noetig**. Der Commit loest anschliessend automatisch den",
+    "taeglichen Tracker aus.",
     "",
-    "### Standard – Datei committen",
-    "1. Lege `profile.json` unter `genome/profile.json` im Repo ab.",
-    "2. Committen:",
-    "   ```bash",
-    "   git add genome/profile.json",
-    "   git commit -m 'Mein DNADiet-Profil'",
-    "   git push",
-    "   ```",
-    "3. Der Workflow **DNADiet Daily Tracker** laeuft taeglich (oder manuell ueber *Actions → Run workflow*)",
-    "   und schreibt Reports nach `reports/` sowie ein Dashboard ins `README.md`.",
+    "**Einmalig noetig – ein GitHub-Token:**",
+    "1. GitHub → *Settings → Developer settings → Fine-grained tokens → Generate new token*.",
+    "2. *Repository access*: nur dein `DNADiet`-Repo. *Permissions → Contents: Read and write*.",
+    "3. Token kopieren. Am bequemsten in Colab hinterlegen: **Schluessel-Symbol** (links) →",
+    "   *Add new secret* → Name `GITHUB_TOKEN`, Wert = dein Token, *Notebook access* an.",
+    "   (Ohne Secret fragt die Zelle den Token einmalig sicher ab.)",
+))
+cells.append(code(
+    "import base64, json as _json, requests",
     "",
-    "> Ob dein Repo oeffentlich oder privat ist, bleibt dir ueberlassen. Die rohen DNA-Dateien",
-    "> gehoeren wegen ihrer Groesse ohnehin nicht ins Git – nur das kleine `profile.json`.",
+    "GH_TOKEN = None",
+    "try:",
+    "    from google.colab import userdata",
+    "    GH_TOKEN = userdata.get('GITHUB_TOKEN')",
+    "except Exception:",
+    "    pass",
+    "if not GH_TOKEN:",
+    "    import getpass",
+    "    GH_TOKEN = getpass.getpass('GitHub-Token (fine-grained, Contents: write): ').strip()",
     "",
-    "### Optional – Profil als GitHub-Secret (nichts Genetisches im Repo-Baum)",
-    "1. Repo → *Settings → Secrets and variables → Actions → New repository secret*.",
-    "2. Name: `DNA_PROFILE_JSON`, Wert: kompletter Inhalt von `profile.json`.",
-    "3. Optional Variable `DNADIET_REDACT=1` setzen, um rohe Genotypen in den committeten Reports zu maskieren.",
+    "PATH = 'genome/profile.json'",
+    "api = f'https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/contents/{PATH}'",
+    "headers = {'Authorization': f'Bearer {GH_TOKEN}', 'Accept': 'application/vnd.github+json'}",
     "",
-    "Fertig – ab dann bekommst du taeglich *Gericht des Tages*, *Fokus-Gen*, ein genetisches",
-    "Rezept-Ranking, Supplement-Empfehlungen und konkrete Rezept-Anpassungen. 🎉",
+    "# Existiert die Datei schon? Dann sha fuer das Update holen.",
+    "sha = None",
+    "g = requests.get(api, headers=headers, params={'ref': BRANCH})",
+    "if g.status_code == 200:",
+    "    sha = g.json().get('sha')",
+    "",
+    "payload = {",
+    "    'message': 'DNADiet: profile.json via Colab aktualisiert',",
+    "    'content': base64.b64encode(open('profile.json','rb').read()).decode(),",
+    "    'branch': BRANCH,",
+    "}",
+    "if sha:",
+    "    payload['sha'] = sha",
+    "",
+    "put = requests.put(api, headers=headers, data=_json.dumps(payload))",
+    "if put.status_code in (200, 201):",
+    "    print('✅ Ins Repo committet:', put.json()['commit']['html_url'])",
+    "    print('Der taegliche Tracker laeuft jetzt automatisch mit deinen echten Daten.')",
+    "    print('Actions-Tab -> DNADiet Daily Tracker fuer den ersten Lauf (oder \"Run workflow\").')",
+    "else:",
+    "    print('Fehler', put.status_code)",
+    "    print(put.text[:500])",
+    "    print('Pruefe: Token-Rechte (Contents: write) und ob GITHUB_OWNER/GITHUB_REPO stimmen.')",
+))
+
+cells.append(md(
+    "## 8) Fertig 🎉",
+    "",
+    "Ab jetzt bekommst du taeglich *Gericht des Tages*, *Fokus-Gen*, ein genetisches",
+    "Rezept-Ranking, Supplement-Empfehlungen und konkrete Rezept-Anpassungen – im Ordner",
+    "`reports/` und im README-Dashboard deines Repos.",
+    "",
+    "**Alternativen, falls du Schritt 7 nicht nutzen willst:**",
+    "- *Lokaler Download + manuelles Commit:* `from google.colab import files; files.download('profile.json')`,",
+    "  dann Datei als `genome/profile.json` ins Repo legen und committen.",
+    "- *GitHub-Secret statt Datei:* Repo → *Settings → Secrets and variables → Actions* →",
+    "  Secret `DNA_PROFILE_JSON` = Inhalt von `profile.json`. Optional Variable `DNADIET_REDACT=1`,",
+    "  um rohe Genotypen in den committeten Reports zu maskieren.",
 ))
 
 nb = {
