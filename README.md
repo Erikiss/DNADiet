@@ -6,13 +6,13 @@ Blueprint-Gerichte (Bryan Johnson) am besten zu deiner Genetik passen, welche
 **Anpassungen** sich lohnen und welche **Supplemente** sinnvoll sind.
 
 <!-- DNADIET:START -->
-### 🧬 DNADiet – Tages-Dashboard (2026-07-27 · ⚠️ DEMO)
+### 🧬 DNADiet – Tages-Dashboard (2026-07-28 · ⚠️ DEMO)
 
-- **🥇 Gericht des Tages:** Chickpea Vegetable Frittata (Fit 100/100, Rang 1)
-- **🔎 Fokus-Gen:** TCF7L2 (rs7903146) – Genotyp `CT`
+- **🥇 Gericht des Tages:** Chickpea Stew (Fit 97/100, Rang 2)
+- **🔎 Fokus-Gen:** FTO (rs9939609) – Genotyp `AT`
 - **📊 Top-3 passende Gerichte:** Chickpea Vegetable Frittata (100), Chickpea Stew (97), Black Lentil and Olive Salad with Spiced Roasted Carrots and Sundried Tomato Hummus (91)
 - **💊 DNA-spezifische Supplement-Hinweise:** 7
-- **📄 Vollstaendiger Report:** [reports/daily/2026-07-27.md](reports/daily/2026-07-27.md)
+- **📄 Vollstaendiger Report:** [reports/daily/2026-07-28.md](reports/daily/2026-07-28.md)
 
 <!-- DNADIET:END -->
 
