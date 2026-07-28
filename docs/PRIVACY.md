@@ -1,7 +1,9 @@
-# Datenschutz & Sicherheit
+# Daten, Sichtbarkeit & Sicherheit
 
-DNADiet verarbeitet **genetische Daten** – die sensibelste Kategorie personenbezogener
-Daten. Dieses Projekt ist so gebaut, dass so wenig wie moeglich davon das Repo erreicht.
+DNADiet verarbeitet **genetische Daten**. Wie offen du damit umgehst, entscheidest du selbst:
+Ein **oeffentliches** Repo (open source, wie in der Biohacking-/Blueprint-Community ueblich)
+funktioniert genauso wie ein privates. Dieses Dokument beschreibt beide Wege und die
+technischen Standardeinstellungen.
 
 ## Datenfluss
 
@@ -17,23 +19,25 @@ GitHub (privat)  ──►  Daily Tracker  ──►  reports/  +  README-Dashbo
 
 ## Prinzipien
 
-1. **Roh-DNA bleibt lokal.** VCF/gVCF/CRAM werden nur im Colab-Notebook gelesen und nie
-   ins Repo geladen. `.gitignore` blockiert `*.vcf.gz`, `*.hc.gz`, `*.cram`, `*.crai`,
-   `*.tbi` u.a.
+1. **Roh-DNA bleibt draussen – aus Groessengruenden.** VCF/gVCF/CRAM sind oft mehrere GB
+   und ueberschreiten GitHubs 100-MB-Limit; `.gitignore` haelt sie daher aus dem Repo
+   (`*.vcf.gz`, `*.hc.gz`, `*.cram`, `*.crai`, `*.tbi` u.a.). Wer die Rohdaten dennoch
+   oeffentlich teilen will, nutzt Release-Assets / Git LFS / externes Hosting.
 2. **Datensparsamkeit.** `profile.json` enthaelt ausschliesslich die Panel-SNPs, die fuer
-   die Ernaehrungsauswertung gebraucht werden.
-3. **Explizites Committen.** `genome/profile.json` ist per `.gitignore` gesperrt und muss
-   bewusst mit `git add -f` hinzugefuegt werden.
-4. **Secret-Alternative.** Statt der Datei kann das Profil als Repo-Secret
-   `DNA_PROFILE_JSON` hinterlegt werden – dann liegt nichts Genetisches im Repo-Baum.
+   die Ernaehrungsauswertung gebraucht werden – kein ganzes Genom.
+3. **Committen ist der Standard.** `genome/profile.json` wird ganz normal versioniert
+   (`git add genome/profile.json`).
+4. **Secret-Alternative.** Wer nichts Genetisches im Repo-Baum will, hinterlegt das Profil
+   als Repo-Secret `DNA_PROFILE_JSON`.
 5. **Redaction.** Repo-Variable `DNADIET_REDACT=1` maskiert rohe Genotypen in den
    committeten Reports.
 
-## Empfehlungen
+## Gut zu wissen
 
-- **Privates Repository verwenden.** Auch interpretierte Genotypen sind sensibel.
-- Zugriffsrechte des Repos eng halten.
-- Bei Weitergabe/Teilen der Reports an die interpretierten Genotypen denken (oder Redaction nutzen).
+- Oeffentlich vs. privat ist deine Wahl – beide Modi werden unterstuetzt.
+- Einmal oeffentlich gestellte genetische Daten lassen sich praktisch nicht mehr
+  zurueckholen; das ist die einzige Ueberlegung wert.
+- Interpretierte Genotypen stehen in den Reports; mit `DNADIET_REDACT=1` bleiben sie maskiert.
 
 ## Kein medizinischer Rat
 

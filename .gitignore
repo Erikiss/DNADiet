@@ -1,4 +1,7 @@
-# --- Rohe DNA-Daten NIEMALS versehentlich committen ---
+# --- Rohe DNA-Dateien aus dem Git heraushalten (GROESSE, nicht Datenschutz) ---
+# Whole-Genome-VCF/CRAM sind oft mehrere GB und ueberschreiten GitHubs 100-MB-Limit.
+# Wer die Rohdaten oeffentlich teilen will, nutzt dafuer Release-Assets / Git LFS /
+# externes Hosting. Das kleine genome/profile.json wird ganz normal committet.
 *.vcf
 *.vcf.gz
 *.hc.gz
@@ -13,10 +16,6 @@
 *.fa
 *.fasta
 *.fai
-
-# --- Persoenliches Genotyp-Profil (bewusst ignoriert, siehe genome/README.md) ---
-# Zum Aktivieren des committed-Modus explizit:  git add -f genome/profile.json
-genome/profile.json
 
 # --- Python ---
 __pycache__/
