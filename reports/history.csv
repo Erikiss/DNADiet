@@ -1,3 +1,4 @@
 date,sample,demo,dish_of_day_id,dish_of_day_title,dish_of_day_fit,focus_gene,focus_rsid,top1_title
 2026-07-27,DEMO-SYNTHETIC,True,3,Chickpea Vegetable Frittata,100,TCF7L2,rs7903146,Chickpea Vegetable Frittata
 2026-07-28,DEMO-SYNTHETIC,True,4,Chickpea Stew,97,FTO,rs9939609,Chickpea Vegetable Frittata
+2026-07-28,M1CQRX41L,False,3,Chickpea Vegetable Frittata,98,CYP2R1,rs10741657,Cauliflower Lentil Loaf

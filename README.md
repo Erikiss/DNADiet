@@ -12,12 +12,12 @@ die 3 Dateien hochladen – am Ende schreibt das Notebook `genome/profile.json` 
 (kein lokales Git, nichts auf Drive). Der Tracker startet dann automatisch.
 
 <!-- DNADIET:START -->
-### 🧬 DNADiet – Tages-Dashboard (2026-07-28 · ⚠️ DEMO)
+### 🧬 DNADiet – Tages-Dashboard (2026-07-28)
 
-- **🥇 Gericht des Tages:** Chickpea Stew (Fit 97/100, Rang 2)
-- **🔎 Fokus-Gen:** FTO (rs9939609) – Genotyp `AT`
-- **📊 Top-3 passende Gerichte:** Chickpea Vegetable Frittata (100), Chickpea Stew (97), Black Lentil and Olive Salad with Spiced Roasted Carrots and Sundried Tomato Hummus (91)
-- **💊 DNA-spezifische Supplement-Hinweise:** 7
+- **🥇 Gericht des Tages:** Chickpea Vegetable Frittata (Fit 98/100, Rang 2)
+- **🔎 Fokus-Gen:** CYP2R1 (rs10741657) – Genotyp `AG`
+- **📊 Top-3 passende Gerichte:** Cauliflower Lentil Loaf (100), Chickpea Vegetable Frittata (98), Chickpea Stew (93)
+- **💊 DNA-spezifische Supplement-Hinweise:** 5
 - **📄 Vollstaendiger Report:** [reports/daily/2026-07-28.md](reports/daily/2026-07-28.md)
 
 <!-- DNADIET:END -->
