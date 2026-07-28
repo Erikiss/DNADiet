@@ -33,8 +33,9 @@ genome/profile.json  -->  Daily Tracker (GitHub Action)  -->  reports/ + Dashboa
 1. **Colab-Mappe oeffnen:** [`notebooks/DNADiet_Colab.ipynb`](notebooks/DNADiet_Colab.ipynb)
    → drei Dateien hochladen → es entsteht ein kleines `profile.json` (nur die
    ernaehrungsrelevanten SNPs, **kein** ganzes Genom).
-2. **Profil hinterlegen:** `genome/profile.json` committen *(privates Repo!)* **oder** als
-   Secret `DNA_PROFILE_JSON` speichern (siehe [genome/README](genome/README.md)).
+2. **Profil hinterlegen:** `genome/profile.json` ins Repo committen (`git add genome/profile.json`).
+   *Alternativen für alle, die es privater mögen:* als Secret `DNA_PROFILE_JSON` speichern oder
+   Genotypen im Report per `DNADIET_REDACT=1` maskieren (siehe [genome/README](genome/README.md)).
 3. **Taeglich zuruecklehnen:** Der Tracker laeuft per Cron (06:00 UTC) und schreibt jeden Tag:
    - 🥇 **Gericht des Tages** (rotiert unter deinen Top-Treffern)
    - 🔎 **Fokus-Gen des Tages** (rotierendes Mini-Erklaerstueck)
@@ -105,11 +106,17 @@ pytest -q                            # Tests
 python -m dnadiet.tracker --date 2026-01-01   # Tracker lokal (Demo-Profil)
 ```
 
-## Datenschutz
+## Daten & Sichtbarkeit
 
-Genetische Daten sind hochsensibel. DNADiet haelt Roh-DNA aus dem Repo heraus, extrahiert
-nur ein minimales Profil und sperrt DNA-Dateien per `.gitignore`. **Nutze ein privates
-Repository.** Details: [`docs/PRIVACY.md`](docs/PRIVACY.md).
+Ob du das Repo **oeffentlich** (open source, wie in der Biohacking-Community ueblich) oder
+privat betreibst, ist deine Entscheidung – DNADiet funktioniert in beiden Faellen. Standardmaessig
+wird nur das kleine `genome/profile.json` (die ~29 Panel-SNPs) versioniert; die **rohen** DNA-Dateien
+(Whole-Genome-VCF/CRAM) bleiben per `.gitignore` draussen – aus Groessengruenden (GitHubs 100-MB-Limit),
+nicht aus Datenschutz. Wer die Rohdaten teilen will, nutzt Release-Assets / Git LFS / externes Hosting.
+
+Falls du es doch privater moechtest: Secret-Modus (`DNA_PROFILE_JSON`) oder Redaction
+(`DNADIET_REDACT=1`). Details: [`docs/PRIVACY.md`](docs/PRIVACY.md). (Genetische Daten einmal
+oeffentlich gestellt lassen sich nicht mehr zurueckholen – das ist die einzige Ueberlegung wert.)
 
 ## Haftungsausschluss
 
