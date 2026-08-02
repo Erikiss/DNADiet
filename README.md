@@ -12,13 +12,13 @@ die 3 Dateien hochladen – am Ende schreibt das Notebook `genome/profile.json` 
 (kein lokales Git, nichts auf Drive). Der Tracker startet dann automatisch.
 
 <!-- DNADIET:START -->
-### 🧬 DNADiet – Tages-Dashboard (2026-08-01)
+### 🧬 DNADiet – Tages-Dashboard (2026-08-02)
 
-- **🥇 Gericht des Tages:** Vegetable Stir Fry with Cauliflower Rice (Fit 84/100, Rang 6)
-- **🔎 Fokus-Gen:** MTHFR (C677T) (rs1801133) – Genotyp `GA`
+- **🥇 Gericht des Tages:** Cauliflower Lentil Loaf (Fit 100/100, Rang 1)
+- **🔎 Fokus-Gen:** TCF7L2 (rs7903146) – Genotyp `CT`
 - **📊 Top-3 passende Gerichte:** Cauliflower Lentil Loaf (100), Chickpea Vegetable Frittata (98), Chickpea Stew (93)
 - **💊 DNA-spezifische Supplement-Hinweise:** 5
-- **📄 Vollstaendiger Report:** [reports/daily/2026-08-01.md](reports/daily/2026-08-01.md)
+- **📄 Vollstaendiger Report:** [reports/daily/2026-08-02.md](reports/daily/2026-08-02.md)
 
 <!-- DNADIET:END -->
 
