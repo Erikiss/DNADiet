@@ -12,13 +12,13 @@ die 3 Dateien hochladen – am Ende schreibt das Notebook `genome/profile.json` 
 (kein lokales Git, nichts auf Drive). Der Tracker startet dann automatisch.
 
 <!-- DNADIET:START -->
-### 🧬 DNADiet – Tages-Dashboard (2026-08-29)
+### 🧬 DNADiet – Tages-Dashboard (2026-08-30)
 
-- **🥇 Gericht des Tages:** Black Lentil and Olive Salad with Spiced Roasted Carrots and Sundried Tomato Hummus (Fit 89/100, Rang 4)
-- **🔎 Fokus-Gen:** TCF7L2 (rs7903146) – Genotyp `CT`
+- **🥇 Gericht des Tages:** Black Bean and Mushroom Bowl with Chickpea Rice (Fit 89/100, Rang 5)
+- **🔎 Fokus-Gen:** MC4R (rs17782313) – Genotyp `TC`
 - **📊 Top-3 passende Gerichte:** Cauliflower Lentil Loaf (100), Chickpea Vegetable Frittata (98), Chickpea Stew (93)
 - **💊 DNA-spezifische Supplement-Hinweise:** 5
-- **📄 Vollstaendiger Report:** [reports/daily/2026-08-29.md](reports/daily/2026-08-29.md)
+- **📄 Vollstaendiger Report:** [reports/daily/2026-08-30.md](reports/daily/2026-08-30.md)
 
 <!-- DNADIET:END -->
 
