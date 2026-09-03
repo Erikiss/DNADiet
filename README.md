@@ -12,13 +12,13 @@ die 3 Dateien hochladen – am Ende schreibt das Notebook `genome/profile.json` 
 (kein lokales Git, nichts auf Drive). Der Tracker startet dann automatisch.
 
 <!-- DNADIET:START -->
-### 🧬 DNADiet – Tages-Dashboard (2026-09-02)
+### 🧬 DNADiet – Tages-Dashboard (2026-09-03)
 
-- **🥇 Gericht des Tages:** Chickpea Vegetable Frittata (Fit 98/100, Rang 2)
-- **🔎 Fokus-Gen:** CYP2R1 (rs10741657) – Genotyp `AG`
+- **🥇 Gericht des Tages:** Chickpea Stew (Fit 93/100, Rang 3)
+- **🔎 Fokus-Gen:** APOE (APOE) – Genotyp `E4/E4`
 - **📊 Top-3 passende Gerichte:** Cauliflower Lentil Loaf (100), Chickpea Vegetable Frittata (98), Chickpea Stew (93)
 - **💊 DNA-spezifische Supplement-Hinweise:** 5
-- **📄 Vollstaendiger Report:** [reports/daily/2026-09-02.md](reports/daily/2026-09-02.md)
+- **📄 Vollstaendiger Report:** [reports/daily/2026-09-03.md](reports/daily/2026-09-03.md)
 
 <!-- DNADIET:END -->
 
