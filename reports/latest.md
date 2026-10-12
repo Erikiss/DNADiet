@@ -1,20 +1,20 @@
-# 🧬🍽️ DNADiet – Tagesreport 2026-10-11
+# 🧬🍽️ DNADiet – Tagesreport 2026-10-12
 
-*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 77
+*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 78
 
 ## 🥇 Gericht des Tages
 
-**Black Bean and Mushroom Bowl with Chickpea Rice**  ·  genetischer Fit **89/100** `█████████░`  ·  Rang 5/14
+**Vegetable Stir Fry with Cauliflower Rice**  ·  genetischer Fit **84/100** `████████░░`  ·  Rang 6/14
 
-*Warum es zu deiner Genetik passt:* MTHFR (C677T): Reduzierte MTHFR-Aktivitaet profitiert von folatreichen Gerichten (Linsen, Kichererbsen, Spinat).; TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.
+*Warum es zu deiner Genetik passt:* TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.; TCF7L2: Zugesetzten Zucker (Ahornsirup, Honig) reduzieren.
 
 ## 🔎 Fokus-Gen des Tages
 
-**CYP1A2** (rs762551) – Koffein-Metabolismus
+**MTHFR (C677T)** (rs1801133) – Folatstoffwechsel / Homocystein
 
-- *Dein Genotyp:* `CC`
-- *Bedeutung:* CC – langsamer Abbau; hoehere Koffeinempfindlichkeit.
-- *Hintergrund:* A-Allel = schneller Koffein-Metabolismus; C-Allel = langsamer Metabolismus und hoehere Koffein-Sensitivitaet.
+- *Dein Genotyp:* `GA`
+- *Bedeutung:* GA – ~65% Aktivitaet, meist unproblematisch bei guter Folatzufuhr.
+- *Hintergrund:* A (677T) senkt die MTHFR-Aktivitaet; AA ~30% Restaktivitaet, hoeheres Homocystein.
 - *Evidenz-Konfidenz:* hoch
 
 ## 📊 Gerichte-Ranking nach deiner Genetik
@@ -80,4 +80,4 @@ _Die Top-Gerichte passen bereits gut – keine Anpassungen noetig._
 ---
 > **Hinweis:** Diese Auswertung dient ausschliesslich Informations- und Bildungszwecken und ist **keine medizinische Beratung, Diagnose oder Therapieempfehlung**. Genvarianten sind nur ein Faktor unter vielen; Effekte sind meist klein und populationsabhaengig. Vor Aenderungen an Ernaehrung oder Supplementen bitte aerztlichen/ernaehrungsmedizinischen Rat einholen. Ein positiver Gentest ist keine Diagnose.
 
-<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-11.</sub>
+<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-12.</sub>
