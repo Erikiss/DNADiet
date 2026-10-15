@@ -1,20 +1,20 @@
-# 🧬🍽️ DNADiet – Tagesreport 2026-10-14
+# 🧬🍽️ DNADiet – Tagesreport 2026-10-15
 
-*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 80
+*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 81
 
 ## 🥇 Gericht des Tages
 
-**Chickpea Vegetable Frittata**  ·  genetischer Fit **98/100** `██████████`  ·  Rang 2/14
+**Chickpea Stew**  ·  genetischer Fit **93/100** `█████████░`  ·  Rang 3/14
 
 *Warum es zu deiner Genetik passt:* MTHFR (C677T): Reduzierte MTHFR-Aktivitaet profitiert von folatreichen Gerichten (Linsen, Kichererbsen, Spinat).; TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.
 
 ## 🔎 Fokus-Gen des Tages
 
-**MC4R** (rs17782313) – Appetit/Saettigung (bestaetigend)
+**TCN2 (P259R)** (rs1801198) – Vitamin-B12-Transport (Holo-Transcobalamin)
 
-- *Dein Genotyp:* `TC`
-- *Bedeutung:* TC
-- *Hintergrund:* C = Allel fuer hoeheren BMI/Appetit; verstaerkt das FTO-Bild.
+- *Dein Genotyp:* `GC`
+- *Bedeutung:* CG – intermediaer.
+- *Hintergrund:* G (776G) senkt Holo-Transcobalamin (zellulaer verfuegbares B12); bei veganer Kost besonders relevant.
 - *Evidenz-Konfidenz:* mittel
 
 ## 📊 Gerichte-Ranking nach deiner Genetik
@@ -80,4 +80,4 @@ _Die Top-Gerichte passen bereits gut – keine Anpassungen noetig._
 ---
 > **Hinweis:** Diese Auswertung dient ausschliesslich Informations- und Bildungszwecken und ist **keine medizinische Beratung, Diagnose oder Therapieempfehlung**. Genvarianten sind nur ein Faktor unter vielen; Effekte sind meist klein und populationsabhaengig. Vor Aenderungen an Ernaehrung oder Supplementen bitte aerztlichen/ernaehrungsmedizinischen Rat einholen. Ein positiver Gentest ist keine Diagnose.
 
-<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-14.</sub>
+<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-15.</sub>
