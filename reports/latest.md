@@ -1,20 +1,20 @@
-# 🧬🍽️ DNADiet – Tagesreport 2026-10-15
+# 🧬🍽️ DNADiet – Tagesreport 2026-10-16
 
-*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 81
+*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 82
 
 ## 🥇 Gericht des Tages
 
-**Chickpea Stew**  ·  genetischer Fit **93/100** `█████████░`  ·  Rang 3/14
+**Black Lentil and Olive Salad with Spiced Roasted Carrots and Sundried Tomato Hummus**  ·  genetischer Fit **89/100** `█████████░`  ·  Rang 4/14
 
 *Warum es zu deiner Genetik passt:* MTHFR (C677T): Reduzierte MTHFR-Aktivitaet profitiert von folatreichen Gerichten (Linsen, Kichererbsen, Spinat).; TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.
 
 ## 🔎 Fokus-Gen des Tages
 
-**TCN2 (P259R)** (rs1801198) – Vitamin-B12-Transport (Holo-Transcobalamin)
+**PEMT (V175M)** (rs7946) – Endogene Cholin-Synthese
 
-- *Dein Genotyp:* `GC`
-- *Bedeutung:* CG – intermediaer.
-- *Hintergrund:* G (776G) senkt Holo-Transcobalamin (zellulaer verfuegbares B12); bei veganer Kost besonders relevant.
+- *Dein Genotyp:* `TT`
+- *Bedeutung:* TT – reduzierte Cholin-Eigensynthese; auf cholinreiche Zutaten achten.
+- *Hintergrund:* T reduziert die endogene Phosphatidylcholin-Synthese; da Cholin auf veganer Kost knapp ist, steigt der Nahrungsbedarf.
 - *Evidenz-Konfidenz:* mittel
 
 ## 📊 Gerichte-Ranking nach deiner Genetik
@@ -80,4 +80,4 @@ _Die Top-Gerichte passen bereits gut – keine Anpassungen noetig._
 ---
 > **Hinweis:** Diese Auswertung dient ausschliesslich Informations- und Bildungszwecken und ist **keine medizinische Beratung, Diagnose oder Therapieempfehlung**. Genvarianten sind nur ein Faktor unter vielen; Effekte sind meist klein und populationsabhaengig. Vor Aenderungen an Ernaehrung oder Supplementen bitte aerztlichen/ernaehrungsmedizinischen Rat einholen. Ein positiver Gentest ist keine Diagnose.
 
-<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-15.</sub>
+<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-16.</sub>
