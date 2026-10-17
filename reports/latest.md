@@ -1,20 +1,20 @@
-# 🧬🍽️ DNADiet – Tagesreport 2026-10-16
+# 🧬🍽️ DNADiet – Tagesreport 2026-10-17
 
-*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 82
+*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 83
 
 ## 🥇 Gericht des Tages
 
-**Black Lentil and Olive Salad with Spiced Roasted Carrots and Sundried Tomato Hummus**  ·  genetischer Fit **89/100** `█████████░`  ·  Rang 4/14
+**Black Bean and Mushroom Bowl with Chickpea Rice**  ·  genetischer Fit **89/100** `█████████░`  ·  Rang 5/14
 
 *Warum es zu deiner Genetik passt:* MTHFR (C677T): Reduzierte MTHFR-Aktivitaet profitiert von folatreichen Gerichten (Linsen, Kichererbsen, Spinat).; TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.
 
 ## 🔎 Fokus-Gen des Tages
 
-**PEMT (V175M)** (rs7946) – Endogene Cholin-Synthese
+**CYP2R1** (rs10741657) – Vitamin-D-25-Hydroxylierung
 
-- *Dein Genotyp:* `TT`
-- *Bedeutung:* TT – reduzierte Cholin-Eigensynthese; auf cholinreiche Zutaten achten.
-- *Hintergrund:* T reduziert die endogene Phosphatidylcholin-Synthese; da Cholin auf veganer Kost knapp ist, steigt der Nahrungsbedarf.
+- *Dein Genotyp:* `AG`
+- *Bedeutung:* AG – intermediaer.
+- *Hintergrund:* CYP2R1 aktiviert Vitamin D in der Leber (25-Hydroxylierung); das A-Allel ist mit niedrigeren 25(OH)D-Spiegeln assoziiert (zweiter robuster D-Locus neben GC).
 - *Evidenz-Konfidenz:* mittel
 
 ## 📊 Gerichte-Ranking nach deiner Genetik
@@ -80,4 +80,4 @@ _Die Top-Gerichte passen bereits gut – keine Anpassungen noetig._
 ---
 > **Hinweis:** Diese Auswertung dient ausschliesslich Informations- und Bildungszwecken und ist **keine medizinische Beratung, Diagnose oder Therapieempfehlung**. Genvarianten sind nur ein Faktor unter vielen; Effekte sind meist klein und populationsabhaengig. Vor Aenderungen an Ernaehrung oder Supplementen bitte aerztlichen/ernaehrungsmedizinischen Rat einholen. Ein positiver Gentest ist keine Diagnose.
 
-<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-16.</sub>
+<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-17.</sub>
