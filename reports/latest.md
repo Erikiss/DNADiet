@@ -1,21 +1,21 @@
-# 🧬🍽️ DNADiet – Tagesreport 2026-10-22
+# 🧬🍽️ DNADiet – Tagesreport 2026-10-23
 
-*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 88
+*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 89
 
 ## 🥇 Gericht des Tages
 
-**Black Lentil and Olive Salad with Spiced Roasted Carrots and Sundried Tomato Hummus**  ·  genetischer Fit **89/100** `█████████░`  ·  Rang 4/14
+**Black Bean and Mushroom Bowl with Chickpea Rice**  ·  genetischer Fit **89/100** `█████████░`  ·  Rang 5/14
 
 *Warum es zu deiner Genetik passt:* MTHFR (C677T): Reduzierte MTHFR-Aktivitaet profitiert von folatreichen Gerichten (Linsen, Kichererbsen, Spinat).; TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.
 
 ## 🔎 Fokus-Gen des Tages
 
-**TCF7L2** (rs7903146) – Blutzucker / Typ-2-Diabetes-Risiko
+**MC4R** (rs17782313) – Appetit/Saettigung (bestaetigend)
 
-- *Dein Genotyp:* `CT`
-- *Bedeutung:* CT – moderat erhoehtes T2D-Risiko.
-- *Hintergrund:* T = staerkstes haeufiges Risikoallel fuer Typ-2-Diabetes; profitiert von niedriger glykaemischer Last.
-- *Evidenz-Konfidenz:* hoch
+- *Dein Genotyp:* `TC`
+- *Bedeutung:* TC
+- *Hintergrund:* C = Allel fuer hoeheren BMI/Appetit; verstaerkt das FTO-Bild.
+- *Evidenz-Konfidenz:* mittel
 
 ## 📊 Gerichte-Ranking nach deiner Genetik
 
@@ -80,4 +80,4 @@ _Die Top-Gerichte passen bereits gut – keine Anpassungen noetig._
 ---
 > **Hinweis:** Diese Auswertung dient ausschliesslich Informations- und Bildungszwecken und ist **keine medizinische Beratung, Diagnose oder Therapieempfehlung**. Genvarianten sind nur ein Faktor unter vielen; Effekte sind meist klein und populationsabhaengig. Vor Aenderungen an Ernaehrung oder Supplementen bitte aerztlichen/ernaehrungsmedizinischen Rat einholen. Ein positiver Gentest ist keine Diagnose.
 
-<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-22.</sub>
+<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-23.</sub>
