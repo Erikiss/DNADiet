@@ -1,20 +1,20 @@
-# 🧬🍽️ DNADiet – Tagesreport 2026-10-23
+# 🧬🍽️ DNADiet – Tagesreport 2026-10-24
 
-*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 89
+*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 90
 
 ## 🥇 Gericht des Tages
 
-**Black Bean and Mushroom Bowl with Chickpea Rice**  ·  genetischer Fit **89/100** `█████████░`  ·  Rang 5/14
+**Vegetable Stir Fry with Cauliflower Rice**  ·  genetischer Fit **84/100** `████████░░`  ·  Rang 6/14
 
-*Warum es zu deiner Genetik passt:* MTHFR (C677T): Reduzierte MTHFR-Aktivitaet profitiert von folatreichen Gerichten (Linsen, Kichererbsen, Spinat).; TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.
+*Warum es zu deiner Genetik passt:* TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.; TCF7L2: Zugesetzten Zucker (Ahornsirup, Honig) reduzieren.
 
 ## 🔎 Fokus-Gen des Tages
 
-**MC4R** (rs17782313) – Appetit/Saettigung (bestaetigend)
+**TCN2 (P259R)** (rs1801198) – Vitamin-B12-Transport (Holo-Transcobalamin)
 
-- *Dein Genotyp:* `TC`
-- *Bedeutung:* TC
-- *Hintergrund:* C = Allel fuer hoeheren BMI/Appetit; verstaerkt das FTO-Bild.
+- *Dein Genotyp:* `GC`
+- *Bedeutung:* CG – intermediaer.
+- *Hintergrund:* G (776G) senkt Holo-Transcobalamin (zellulaer verfuegbares B12); bei veganer Kost besonders relevant.
 - *Evidenz-Konfidenz:* mittel
 
 ## 📊 Gerichte-Ranking nach deiner Genetik
@@ -80,4 +80,4 @@ _Die Top-Gerichte passen bereits gut – keine Anpassungen noetig._
 ---
 > **Hinweis:** Diese Auswertung dient ausschliesslich Informations- und Bildungszwecken und ist **keine medizinische Beratung, Diagnose oder Therapieempfehlung**. Genvarianten sind nur ein Faktor unter vielen; Effekte sind meist klein und populationsabhaengig. Vor Aenderungen an Ernaehrung oder Supplementen bitte aerztlichen/ernaehrungsmedizinischen Rat einholen. Ein positiver Gentest ist keine Diagnose.
 
-<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-23.</sub>
+<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-24.</sub>
