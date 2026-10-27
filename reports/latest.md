@@ -1,21 +1,21 @@
-# 🧬🍽️ DNADiet – Tagesreport 2026-10-26
+# 🧬🍽️ DNADiet – Tagesreport 2026-10-27
 
-*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 92
+*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 93
 
 ## 🥇 Gericht des Tages
 
-**Chickpea Vegetable Frittata**  ·  genetischer Fit **98/100** `██████████`  ·  Rang 2/14
+**Chickpea Stew**  ·  genetischer Fit **93/100** `█████████░`  ·  Rang 3/14
 
 *Warum es zu deiner Genetik passt:* MTHFR (C677T): Reduzierte MTHFR-Aktivitaet profitiert von folatreichen Gerichten (Linsen, Kichererbsen, Spinat).; TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.
 
 ## 🔎 Fokus-Gen des Tages
 
-**CYP2R1** (rs10741657) – Vitamin-D-25-Hydroxylierung
+**APOE** (APOE) – APOE-Isoform (Fettstoffwechsel)
 
-- *Dein Genotyp:* `AG`
-- *Bedeutung:* AG – intermediaer.
-- *Hintergrund:* CYP2R1 aktiviert Vitamin D in der Leber (25-Hydroxylierung); das A-Allel ist mit niedrigeren 25(OH)D-Spiegeln assoziiert (zweiter robuster D-Locus neben GC).
-- *Evidenz-Konfidenz:* mittel
+- *Dein Genotyp:* `E4/E4`
+- *Bedeutung:* APOE-e4-Traeger: erhoehte Empfindlichkeit gegenueber gesaettigtem Fett, tendenziell hoeheres LDL/kardiovaskulaeres Risiko.
+- *Hintergrund:* APOE bestimmt die Reaktion auf Nahrungsfette; e4 = fett-/cholesterinsensitiv, e2 = triglyzeridsensitiv.
+- *Evidenz-Konfidenz:* hoch
 
 ## 📊 Gerichte-Ranking nach deiner Genetik
 
@@ -80,4 +80,4 @@ _Die Top-Gerichte passen bereits gut – keine Anpassungen noetig._
 ---
 > **Hinweis:** Diese Auswertung dient ausschliesslich Informations- und Bildungszwecken und ist **keine medizinische Beratung, Diagnose oder Therapieempfehlung**. Genvarianten sind nur ein Faktor unter vielen; Effekte sind meist klein und populationsabhaengig. Vor Aenderungen an Ernaehrung oder Supplementen bitte aerztlichen/ernaehrungsmedizinischen Rat einholen. Ein positiver Gentest ist keine Diagnose.
 
-<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-26.</sub>
+<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-27.</sub>
