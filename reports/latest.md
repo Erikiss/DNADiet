@@ -1,20 +1,20 @@
-# 🧬🍽️ DNADiet – Tagesreport 2026-10-27
+# 🧬🍽️ DNADiet – Tagesreport 2026-10-28
 
-*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 93
+*Profil:* `M1CQRX41L` · *Assembly:* GRCh38 · *Panel:* 29 SNPs · *Calls:* 29 (davon 17 niedrige Konfidenz) · *Serie:* Tag 94
 
 ## 🥇 Gericht des Tages
 
-**Chickpea Stew**  ·  genetischer Fit **93/100** `█████████░`  ·  Rang 3/14
+**Black Lentil and Olive Salad with Spiced Roasted Carrots and Sundried Tomato Hummus**  ·  genetischer Fit **89/100** `█████████░`  ·  Rang 4/14
 
 *Warum es zu deiner Genetik passt:* MTHFR (C677T): Reduzierte MTHFR-Aktivitaet profitiert von folatreichen Gerichten (Linsen, Kichererbsen, Spinat).; TCF7L2: Ballaststoffe daempfen die Blutzuckerantwort.
 
 ## 🔎 Fokus-Gen des Tages
 
-**APOE** (APOE) – APOE-Isoform (Fettstoffwechsel)
+**MCM6/LCT** (rs4988235) – Laktosetoleranz (Laktasepersistenz)
 
-- *Dein Genotyp:* `E4/E4`
-- *Bedeutung:* APOE-e4-Traeger: erhoehte Empfindlichkeit gegenueber gesaettigtem Fett, tendenziell hoeheres LDL/kardiovaskulaeres Risiko.
-- *Hintergrund:* APOE bestimmt die Reaktion auf Nahrungsfette; e4 = fett-/cholesterinsensitiv, e2 = triglyzeridsensitiv.
+- *Dein Genotyp:* `GA`
+- *Bedeutung:* GA – meist ausreichende Laktaseaktivitaet.
+- *Hintergrund:* G = ancestrale, adulte Laktase-Nicht-Persistenz (Laktoseintoleranz-Neigung); A = Laktasepersistenz.
 - *Evidenz-Konfidenz:* hoch
 
 ## 📊 Gerichte-Ranking nach deiner Genetik
@@ -80,4 +80,4 @@ _Die Top-Gerichte passen bereits gut – keine Anpassungen noetig._
 ---
 > **Hinweis:** Diese Auswertung dient ausschliesslich Informations- und Bildungszwecken und ist **keine medizinische Beratung, Diagnose oder Therapieempfehlung**. Genvarianten sind nur ein Faktor unter vielen; Effekte sind meist klein und populationsabhaengig. Vor Aenderungen an Ernaehrung oder Supplementen bitte aerztlichen/ernaehrungsmedizinischen Rat einholen. Ein positiver Gentest ist keine Diagnose.
 
-<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-27.</sub>
+<sub>Automatisch erzeugt vom DNADiet-Tracker am 2026-10-28.</sub>
